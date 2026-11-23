@@ -32,78 +32,118 @@ def ojos(d, x, y, s, mirada=0, susto=False):
         d.ellipse([x + dx - pr + mirada * s, y - pr, x + dx + pr + mirada * s, y + pr], fill=OUT)
 
 
-def monigote(d, x, y, s=1.0, tipo="peron", brazos="abajo", boca="normal", susto=False):
-    """x,y = pies (centro). Altura total ~ 480*s."""
-    s *= 1.45
-    w = int(4 * s)
-    trajes = {"peron": (70, 85, 60), "peron_viejo": (40, 40, 48), "soldado": (85, 95, 60),
-              "obrero": (60, 90, 140), "evita": (230, 230, 225), "juez": (25, 25, 28),
-              "policia": (35, 60, 130), "sereno": (110, 85, 55), "ladron": (25, 25, 28),
-              "encapuchado": (60, 20, 25), "mujer": (150, 60, 90)}
-    c = trajes.get(tipo, (70, 70, 70))
-    c = tuple(int(v * 0.8) for v in c)
-    d.ellipse([x - 85 * s, y - 10 * s, x + 85 * s, y + 14 * s], fill=(8, 8, 10))
+RIM = (255, 214, 160)
+
+
+def _figura(md, x, y, s, tipo, brazos, m):
+    """Dibuja la silueta en una máscara. m = 1 mira a la derecha, -1 a la izquierda."""
+    def P(dx, dy):
+        return (x + dx * m * s, y + dy * s)
+    def poly(pts):
+        md.polygon([P(*q) for q in pts], fill=255)
+    def ell(cx, cy, rx, ry):
+        a, b = P(cx - rx * m, cy - ry), P(cx + rx * m, cy + ry)
+        md.ellipse([min(a[0], b[0]), a[1], max(a[0], b[0]), b[1]], fill=255)
+    def linea(p1, p2, w):
+        md.line([P(*p1), P(*p2)], fill=255, width=int(w * s))
+        for q in (p1, p2):
+            ell(q[0], q[1], w / 2, w / 2)
+    largo = tipo in ("juez", "encapuchado", "evita", "mujer", "ladron")
     # piernas
-    for dx in (-22, 22):
-        d.rectangle([x + (dx - 10) * s, y - 95 * s, x + (dx + 10) * s, y], fill=OUT)
-        d.ellipse([x + (dx - 16) * s, y - 12 * s, x + (dx + 18) * s, y + 6 * s], fill=OUT)
-    # cuerpo
+    if not largo or tipo == "ladron":
+        linea((-18, -170), (-24, -8), 30); linea((18, -170), (26, -8), 30)
+        ell(-18, -6, 26, 10); ell(34, -6, 26, 10)
+    # torso / abrigo
     if tipo in ("evita", "mujer"):
-        d.polygon([(x - 40 * s, y - 210 * s), (x + 40 * s, y - 210 * s), (x + 70 * s, y - 80 * s), (x - 70 * s, y - 80 * s)],
-                  fill=c, outline=OUT, width=w)
+        poly([(-40, -330), (40, -330), (55, -250), (95, -20), (-95, -20), (-55, -250)])
+        linea((-14, -30), (-14, 0), 18); linea((14, -30), (14, 0), 18)
     elif tipo in ("juez", "encapuchado"):
-        d.polygon([(x - 50 * s, y - 210 * s), (x + 50 * s, y - 210 * s), (x + 65 * s, y - 40 * s), (x - 65 * s, y - 40 * s)],
-                  fill=c, outline=OUT, width=w)
+        poly([(-58, -335), (58, -335), (82, 0), (-82, 0)])
     else:
-        d.rounded_rectangle([x - 50 * s, y - 215 * s, x + 50 * s, y - 85 * s], radius=int(18 * s), fill=c, outline=OUT, width=w)
-        if tipo in ("peron", "soldado", "policia", "peron_viejo"):
-            for i in range(3):
-                d.ellipse([x - 5 * s, y - (190 - i * 35) * s, x + 5 * s, y - (180 - i * 35) * s], fill=AMAR)
-        if tipo == "peron":  # banda presidencial
-            d.polygon([(x - 50 * s, y - 210 * s), (x - 30 * s, y - 215 * s), (x + 50 * s, y - 110 * s), (x + 50 * s, y - 90 * s)],
-                      fill=(117, 170, 219))
-            d.line([(x - 40 * s, y - 212 * s), (x + 50 * s, y - 100 * s)], fill="white", width=int(6 * s))
-    # brazos
-    hx = {"abajo": [(-75, -110), (75, -110)], "arriba": [(-80, -300), (80, -300)], "uno": [(-75, -110), (85, -300)],
-          "frente": [(-75, -110), (120, -190)], "duda": [(-95, -230), (95, -230)]}[brazos]
-    for (dx, dy), sgn in zip(hx, (-1, 1)):
-        d.line([(x + sgn * 45 * s, y - 200 * s), (x + dx * s, y + dy * s)], fill=c if tipo != "evita" else PIEL, width=int(18 * s))
-        d.ellipse([x + dx * s - 11 * s, y + dy * s - 11 * s, x + dx * s + 11 * s, y + dy * s + 11 * s], fill=PIEL, outline=OUT, width=int(3 * s))
-    # cabeza
-    hy = y - 265 * s
-    r = 55 * s
-    if tipo == "evita":
-        d.ellipse([x - 30 * s, hy - 95 * s, x + 30 * s, hy - 40 * s], fill=(240, 200, 80), outline=OUT, width=w)  # moño
-    d.ellipse([x - r, hy - r, x + r, hy + r], fill=PIEL, outline=OUT, width=w)
-    pelo = {"peron": (25, 25, 25), "peron_viejo": (170, 170, 170), "evita": (240, 200, 80), "juez": (220, 220, 220),
-            "mujer": (60, 35, 25)}.get(tipo, (40, 30, 25))
-    if tipo in ("ladron", "encapuchado"):
-        d.ellipse([x - r - 4 * s, hy - r - 4 * s, x + r + 4 * s, hy + r + 4 * s], fill=c if tipo == "encapuchado" else (25, 25, 28), outline=OUT, width=w)
+        poly([(-60, -330), (60, -330), (66, -290), (50, -165), (-50, -165), (-66, -290)])
+        ell(0, -318, 66, 26)
+        if tipo in ("peron", "peron_viejo", "soldado", "policia", "sereno"):  # faldón de saco
+            poly([(-58, -175), (58, -175), (54, -130), (-54, -130)])
+    # cuello y cabeza
+    poly([(-16, -350), (16, -350), (18, -330), (-18, -330)])
+    hy = -398
+    if tipo in ("encapuchado", "ladron"):
+        ell(0, hy, 50, 56)
         if tipo == "encapuchado":
-            d.polygon([(x - r, hy - 20 * s), (x, hy - r - 60 * s), (x + r, hy - 20 * s)], fill=c, outline=OUT)
-        d.rectangle([x - 40 * s, hy - 22 * s, x + 40 * s, hy + 12 * s], fill=PIEL)
-        ojos(d, x, hy - 5 * s, s * 0.85, susto=susto)
-        return
-    d.chord([x - r, hy - r, x + r, hy + r], 180, 360, fill=pelo, outline=OUT, width=w)
-    if tipo in ("peron", "soldado", "policia", "peron_viejo"):  # gorra militar
-        gc = (55, 70, 45) if tipo != "policia" else (25, 40, 100)
-        d.rounded_rectangle([x - 52 * s, hy - 85 * s, x + 52 * s, hy - 35 * s], radius=int(12 * s), fill=gc, outline=OUT, width=w)
-        d.rectangle([x - 55 * s, hy - 42 * s, x + 55 * s, hy - 30 * s], fill=OUT)
-        d.ellipse([x - 9 * s, hy - 72 * s, x + 9 * s, hy - 54 * s], fill=AMAR)
-    if tipo == "obrero":
-        d.chord([x - 55 * s, hy - 75 * s, x + 55 * s, hy - 5 * s], 180, 360, fill=(60, 90, 140), outline=OUT, width=w)
-    if tipo == "sereno":
-        d.rounded_rectangle([x - 50 * s, hy - 75 * s, x + 50 * s, hy - 35 * s], radius=int(10 * s), fill=(80, 60, 40), outline=OUT, width=w)
-    ojos(d, x, hy - 5 * s, s, susto=susto)
-    if boca == "sonrisa":
-        d.arc([x - 25 * s, hy + 5 * s, x + 25 * s, hy + 35 * s], 10, 170, fill=OUT, width=int(4 * s))
-    elif boca == "o" or susto:
-        d.ellipse([x - 9 * s, hy + 18 * s, x + 9 * s, hy + 38 * s], fill=OUT)
+            poly([(-48, hy - 10), (0, hy - 120), (50, hy - 10)])
     else:
-        d.line([(x - 15 * s, hy + 27 * s), (x + 15 * s, hy + 27 * s)], fill=OUT, width=int(4 * s))
-    if tipo == "peron_viejo":
-        d.line([(x - 30 * s, hy - 25 * s), (x - 8 * s, hy - 20 * s)], fill=OUT, width=int(3 * s))
-        d.line([(x + 30 * s, hy - 25 * s), (x + 8 * s, hy - 20 * s)], fill=OUT, width=int(3 * s))
+        ell(0, hy, 44, 50)
+        poly([(36, hy - 10), (58, hy + 8), (40, hy + 16)])  # nariz
+        poly([(20, hy + 30), (36, hy + 34), (24, hy + 50), (0, hy + 50)])  # mentón
+        if tipo in ("peron", "peron_viejo", "soldado", "policia"):  # gorra de plato con visera
+            poly([(-46, hy - 26), (-62, hy - 80), (56, hy - 88), (46, hy - 30)])
+            ell(-3, hy - 84, 59, 10)
+            poly([(26, hy - 36), (84, hy - 22), (80, hy - 14), (16, hy - 22)])
+        elif tipo == "evita":
+            ell(-38, hy - 18, 34, 32)  # moño
+        elif tipo == "mujer":
+            poly([(-48, hy - 30), (36, hy - 40), (40, hy + 10), (-30, hy + 90), (-60, hy + 40)])
+        elif tipo == "obrero":
+            poly([(-46, hy - 26), (0, hy - 60), (46, hy - 30), (80, hy - 20), (40, hy - 16)])
+        elif tipo == "sereno":
+            poly([(-50, hy - 30), (-40, hy - 70), (44, hy - 70), (52, hy - 30), (70, hy - 24), (-60, hy - 24)])
+        elif tipo == "juez":
+            ell(-6, hy - 8, 50, 50)
+    # brazos
+    hombro_d, hombro_i = (52, -318), (-52, -318)
+    poses = {"abajo": ((-58, -170), (62, -170)), "arriba": ((-90, -500), (95, -500)),
+             "uno": ((-58, -170), (135, -505)), "frente": ((-58, -170), (175, -300)),
+             "duda": ((-120, -300), (125, -300))}
+    mi, mdx = poses.get(brazos, poses["abajo"])
+    codo_i = ((hombro_i[0] + mi[0]) / 2 - 12, (hombro_i[1] + mi[1]) / 2 + 6)
+    codo_d = ((hombro_d[0] + mdx[0]) / 2 + 12, (hombro_d[1] + mdx[1]) / 2 + 6)
+    for h, c, mano_ in ((hombro_i, codo_i, mi), (hombro_d, codo_d, mdx)):
+        linea(h, c, 34); linea(c, mano_, 26); ell(mano_[0], mano_[1], 17, 17)
+    if tipo == "soldado":
+        linea((80, -120), (110, -470), 12)
+    return hy
+
+
+def monigote(d, x, y, s=1.0, tipo="peron", brazos="abajo", boca="normal", susto=False, mira=1, luz=RIM):
+    """Silueta noir a contraluz. x,y = pies. Altura ~ 520*s."""
+    img = d._image
+    s *= 1.0
+    W, H = img.size
+    mask = Image.new("L", (W, H), 0)
+    md = ImageDraw.Draw(mask)
+    hy = _figura(md, x, y, s, tipo, brazos, mira)
+    mask = mask.filter(ImageFilter.GaussianBlur(1.6)).point(lambda v: min(255, int(v * 1.6)))
+    # halo detrás
+    halo = mask.filter(ImageFilter.GaussianBlur(int(28 * s) + 1)).point(lambda v: int(v * 0.45))
+    img.paste(Image.new("RGB", (W, H), tuple(int(c * 0.55) for c in luz)), (0, 0), halo)
+    # borde de luz (contraluz desde arriba-izquierda)
+    off = max(2, int(5 * s))
+    rim = ImageChops.offset(mask, -off * mira, -off).filter(ImageFilter.GaussianBlur(1.2))
+    img.paste(Image.new("RGB", (W, H), luz), (0, 0), rim)
+    # cuerpo negro
+    img.paste(Image.new("RGB", (W, H), (10, 10, 13)), (0, 0), mask)
+    d2 = ImageDraw.Draw(img)
+    # sombra en el piso
+    d2.ellipse([x - 110 * s, y - 8 * s, x + 110 * s, y + 16 * s], fill=(6, 6, 8))
+    # detalles con luz: ojos de los malos, banda presidencial, linterna, insignias
+    if tipo in ("ladron", "encapuchado"):
+        for dx in (-14, 16):
+            ex, ey = x + dx * mira * s + 12 * mira * s, y + (hy - 4) * s
+            glow(img, [([ex - 16 * s, ey - 10 * s, ex + 16 * s, ey + 10 * s], (200, 20, 20), "ellipse")], int(8 * s) + 1)
+            d2.ellipse([ex - 7 * s, ey - 4 * s, ex + 7 * s, ey + 4 * s], fill=(255, 70, 60))
+    if tipo == "peron":
+        d2.line([(x - 50 * mira * s, y - 330 * s), (x + 55 * mira * s, y - 175 * s)], fill=(105, 150, 200), width=int(14 * s))
+        d2.line([(x - 50 * mira * s, y - 330 * s), (x + 55 * mira * s, y - 175 * s)], fill=(210, 220, 230), width=int(4 * s))
+    if tipo in ("peron", "peron_viejo", "soldado", "policia"):
+        d2.ellipse([x + 4 * mira * s - 6 * s, y + (hy - 62) * s, x + 4 * mira * s + 6 * s, y + (hy - 50) * s], fill=(230, 180, 60))
+    if tipo == "sereno":
+        lx, ly = x + 175 * mira * s, y - 290 * s
+        glow(img, [([lx - 90 * s, ly - 90 * s, lx + 90 * s, ly + 90 * s], (200, 140, 40), "ellipse")], int(30 * s))
+        d2.rectangle([lx - 14 * s, ly - 10 * s, lx + 14 * s, ly + 26 * s], fill=(255, 210, 110), outline=(10, 10, 13), width=3)
+    if tipo == "juez":
+        d2.rectangle([x + 150 * mira * s - 30 * s, y - 330 * s, x + 150 * mira * s + 30 * s, y - 300 * s], fill=(10, 10, 13))
+    if susto or boca == "o":
+        pass
 
 
 # ---------------------------------------------------------------- fondos
