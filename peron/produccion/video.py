@@ -4,11 +4,12 @@ Uso: python3 video.py <dir_con_voz_y_tiempos> <salida.mp4> <vertical|horizontal>
 Fuentes: variable FONTS_DIR con fontsource-anton.woff y fontsource-bebas-neue.woff
 """
 import json, math, os, random, subprocess, sys
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 FD = os.environ["FONTS_DIR"]
 ANTON = os.path.join(FD, "fontsource-anton.woff")
 BEBAS = os.path.join(FD, "fontsource-bebas-neue.woff")
+ELITE = os.path.join(FD, "fontsource-special-elite.woff")
 FPS = 25
 LABEL_Y = 0.075
 ROJO = (214, 32, 39); BLANCO = (245, 245, 245); NEGRO = (12, 12, 14); AMAR = (250, 204, 21)
@@ -40,6 +41,8 @@ def monigote(d, x, y, s=1.0, tipo="peron", brazos="abajo", boca="normal", susto=
               "policia": (35, 60, 130), "sereno": (110, 85, 55), "ladron": (25, 25, 28),
               "encapuchado": (60, 20, 25), "mujer": (150, 60, 90)}
     c = trajes.get(tipo, (70, 70, 70))
+    c = tuple(int(v * 0.8) for v in c)
+    d.ellipse([x - 85 * s, y - 10 * s, x + 85 * s, y + 14 * s], fill=(8, 8, 10))
     # piernas
     for dx in (-22, 22):
         d.rectangle([x + (dx - 10) * s, y - 95 * s, x + (dx + 10) * s, y], fill=OUT)
@@ -104,63 +107,97 @@ def monigote(d, x, y, s=1.0, tipo="peron", brazos="abajo", boca="normal", susto=
 
 
 # ---------------------------------------------------------------- fondos
+def glow(img, shapes, radius, strength=1.0):
+    """Suma luz difusa: shapes = [(bbox, color, 'ellipse'|'polygon'|'rect')]."""
+    W, H = img.size
+    lay = Image.new("RGB", (W, H), (0, 0, 0))
+    gd = ImageDraw.Draw(lay)
+    for geom, col, kind in shapes:
+        col = tuple(int(c * strength) for c in col)
+        getattr(gd, kind)(geom, fill=col)
+    lay = lay.filter(ImageFilter.GaussianBlur(radius))
+    img.paste(ImageChops.add(img, lay))
+
+
+def cielo(d, W, H, top, bot, hasta):
+    for i in range(hasta):
+        t = i / max(1, hasta)
+        d.line([(0, i), (W, i)], fill=tuple(int(top[k] + (bot[k] - top[k]) * t) for k in range(3)))
+
+
+def estrellas(d, W, H, n=90, seed=3):
+    rnd = random.Random(seed)
+    for _ in range(n):
+        x, y = rnd.randrange(W), rnd.randrange(int(H * 0.55))
+        r = rnd.choice((1, 1, 2, 2, 3))
+        c = rnd.randint(150, 235)
+        d.ellipse([x, y, x + r, y + r], fill=(c, c, c + 10 if c < 245 else c))
+
+
 def fondo(img, tipo):
     W, H = img.size
     d = ImageDraw.Draw(img)
     piso = int(H * 0.82)
+    luces = []
+    if tipo in ("noche", "isla", "plaza"):
+        cielo(d, W, H, (8, 10, 24), (28, 36, 62), H)
+        estrellas(d, W, H)
+        mx, my, mr = W * 0.86, H * 0.16, 52
+        d.ellipse([mx - mr, my - mr, mx + mr, my + mr], fill=(205, 205, 190))
+        d.ellipse([mx - mr * 0.5, my - mr * 0.3, mx - mr * 0.2, my], fill=(200, 200, 185))
+        luces.append(([mx - mr * 2.2, my - mr * 2.2, mx + mr * 2.2, my + mr * 2.2], (70, 70, 60), "ellipse"))
     if tipo == "noche":
-        for i in range(H):
-            t = i / H
-            d.line([(0, i), (W, i)], fill=(int(15 + 15 * t), int(18 + 20 * t), int(45 + 30 * t)))
-        rnd = random.Random(3)
-        for _ in range(70):
-            x, y = rnd.randrange(W), rnd.randrange(int(H * 0.6))
-            d.ellipse([x, y, x + 3, y + 3], fill=(230, 230, 240))
-        d.ellipse([W * 0.78, H * 0.07, W * 0.78 + 90, H * 0.07 + 90], fill=(235, 230, 190))
-        d.rectangle([0, piso, W, H], fill=(55, 60, 55))
+        d.rectangle([0, piso - 70, W, piso], fill=(62, 52, 40))  # muro bajo
+        for xx in range(0, W, 90):
+            d.line([(xx, piso - 70), (xx, piso)], fill=(50, 42, 33), width=3)
+        d.rectangle([0, piso, W, H], fill=(38, 38, 40))
+    elif tipo == "isla":
+        d.rectangle([0, int(H * 0.62), W, H], fill=(14, 24, 44))
+        for k in range(10):
+            yy = int(H * 0.66) + k * 34
+            d.line([(0, yy), (W, yy + 6)], fill=(30, 46, 75), width=2)
+        luces.append(([W * 0.78, H * 0.62, W * 0.9, H], (60, 60, 50), "rectangle"))
+    elif tipo == "plaza":
+        bx = W // 2
+        d.rectangle([bx - 320, piso - 340, bx + 320, piso], fill=(120, 80, 85), outline=(25, 20, 22), width=4)
+        d.polygon([(bx - 120, piso - 340), (bx, piso - 420), (bx + 120, piso - 340)], fill=(110, 72, 78), outline=(25, 20, 22))
+        for i in range(-260, 270, 104):
+            for row in (0, 1):
+                y0 = piso - 290 + row * 120
+                d.rectangle([bx + i - 24, y0, bx + i + 24, y0 + 70], fill=(240, 200, 110))
+                luces.append(([bx + i - 40, y0 - 15, bx + i + 40, y0 + 85], (150, 110, 40), "rectangle"))
+        d.rectangle([0, piso, W, H], fill=(40, 40, 44))
     elif tipo == "cripta":
-        d.rectangle([0, 0, W, H], fill=(70, 66, 62))
+        d.rectangle([0, 0, W, H], fill=(34, 32, 32))
         for yy in range(0, piso, 60):
             off = 0 if (yy // 60) % 2 else 60
             for xx in range(-off, W, 120):
-                d.rectangle([xx, yy, xx + 118, yy + 58], outline=(50, 47, 44), width=3)
-        d.rectangle([0, piso, W, H], fill=(40, 38, 36))
-    elif tipo == "plaza":
-        for i in range(H):
-            t = i / H
-            d.line([(0, i), (W, i)], fill=(int(120 + 60 * t), int(170 + 40 * t), 230))
-        bx = W // 2
-        d.rectangle([bx - 300, piso - 330, bx + 300, piso], fill=(226, 160, 160), outline=OUT, width=4)  # Casa Rosada
-        for i in range(-250, 260, 100):
-            d.rectangle([bx + i - 25, piso - 280, bx + i + 25, piso - 200], fill=(70, 90, 120), outline=OUT, width=3)
-        d.rectangle([0, piso, W, H], fill=(150, 150, 140))
+                d.rectangle([xx, yy, xx + 118, yy + 58], fill=(44, 41, 40), outline=(26, 24, 24), width=3)
+        d.rectangle([0, piso, W, H], fill=(22, 20, 20))
+        for cx in (W * 0.12, W * 0.88):  # velas
+            d.rectangle([cx - 12, piso - 110, cx + 12, piso - 40], fill=(220, 210, 190))
+            d.ellipse([cx - 10, piso - 140, cx + 10, piso - 108], fill=(255, 200, 90))
+            luces.append(([cx - 260, piso - 380, cx + 260, piso + 120], (150, 85, 25), "ellipse"))
     elif tipo == "oficina":
-        d.rectangle([0, 0, W, H], fill=(140, 95, 60))
-        for xx in range(0, W, 40):
-            d.line([(xx, 0), (xx, piso)], fill=(125, 84, 52), width=2)
-        d.rectangle([0, piso, W, H], fill=(70, 45, 30))
-    elif tipo == "isla":
-        for i in range(H):
-            t = i / H
-            d.line([(0, i), (W, i)], fill=(int(90 + 50 * t), int(110 + 50 * t), int(150 + 40 * t)))
-        d.rectangle([0, int(H * 0.6), W, H], fill=(40, 80, 130))
-        for k in range(8):
-            yy = int(H * 0.65) + k * 40
-            d.arc([-50 + (k % 2) * 60, yy, W, yy + 30], 0, 180, fill=(120, 170, 220), width=3)
-    else:  # oscuro con viñeta roja
+        d.rectangle([0, 0, W, H], fill=(38, 28, 22))
+        for xx in range(0, W, 46):
+            d.line([(xx, 0), (xx, piso)], fill=(30, 22, 17), width=3)
+        d.rectangle([0, piso, W, H], fill=(24, 17, 13))
+        lx = W * 0.5
+        d.polygon([(lx - 60, 0), (lx + 60, 0), (lx + 40, 40), (lx - 40, 40)], fill=(30, 50, 40))
+        luces.append(([(lx - 50, 40), (lx + 50, 40), (lx + W * 0.42, piso + 40), (lx - W * 0.42, piso + 40)], (110, 85, 40), "polygon"))
+    elif tipo not in ("noche", "isla", "plaza"):  # oscuro con viñeta roja
         d.rectangle([0, 0, W, H], fill=NEGRO)
-        glow = Image.new("RGB", (W, H), NEGRO)
-        gd = ImageDraw.Draw(glow)
-        gd.ellipse([W * 0.2, H * 0.15, W * 0.8, H * 0.85], fill=(120, 15, 20))
-        glow = glow.filter(ImageFilter.GaussianBlur(min(W, H) // 6))
-        img.paste(glow)
+        luces.append(([W * 0.15, H * 0.12, W * 0.85, H * 0.88], (120, 14, 20), "ellipse"))
+    if luces:
+        glow(img, luces, max(30, min(W, H) // 12))
     return piso
 
 
-def etiqueta(d, x, y, txt, size=58, fg=BLANCO, bg=ROJO):
-    f = F(BEBAS, size)
+def etiqueta(d, x, y, txt, size=46, fg=(235, 60, 60), bg=(10, 10, 12)):
+    f = F(ELITE, size)
     w = d.textlength(txt, font=f)
-    d.rectangle([x - w / 2 - 16, y - 6, x + w / 2 + 16, y + size + 4], fill=bg, outline=OUT, width=3)
+    d.rectangle([x - w / 2 - 18, y - 8, x + w / 2 + 18, y + size + 8], fill=bg, outline=ROJO, width=4)
     d.text((x - w / 2, y), txt, font=f, fill=fg)
 
 
@@ -198,6 +235,29 @@ def sobre(d, x, y, s=1.0, txt=None):
     d.line([(x - 110 * s, y - 70 * s), (x, y + 5 * s), (x + 110 * s, y - 70 * s)], fill=OUT, width=4)
     if txt:
         d.text((x, y + 40 * s), txt, font=F(BEBAS, int(30 * s)), fill=ROJO, anchor="mm")
+
+
+def post(img):
+    """Gradación tipo cómic nocturno: menos saturación, contraste, textura de papel y viñeta."""
+    from PIL import ImageEnhance
+    W, H = img.size
+    img = ImageEnhance.Color(img).enhance(0.78)
+    img = ImageEnhance.Contrast(img).enhance(1.08)
+    rnd = random.Random(11)
+    tex = Image.effect_noise((W // 2, H // 2), 40).resize((W, H)).convert("RGB")
+    img = Image.blend(img, ImageChops.multiply(img, ImageChops.invert(ImageChops.invert(tex).point(lambda v: v // 3))), 0.35)
+    return ImageChops.multiply(img, vignette(W, H, 0.62))
+
+
+def vignette(W, H, fuerza, _c={}):
+    k = (W, H, fuerza)
+    if k not in _c:
+        m = Image.new("L", (W // 4, H // 4), 0)
+        ImageDraw.Draw(m).ellipse([-W * 0.08, -H * 0.06, W * 0.33, H * 0.31], fill=255)
+        m = m.filter(ImageFilter.GaussianBlur(W // 18)).resize((W, H))
+        m = m.point(lambda v: int(255 * (1 - fuerza) + v * fuerza))
+        _c[k] = Image.merge("RGB", (m, m, m))
+    return _c[k]
 
 
 def escena(tipo, W, H):
@@ -267,7 +327,7 @@ def escena(tipo, W, H):
         etiqueta(d, cx, H * LABEL_Y, "JUNIO DE 1987")
     elif tipo == "ladron":
         ataud(d, cx - 120 * s, piso, 0.9 * s, roto=True)
-        monigote(d, cx + 330 * s, piso + 10 * s, 0.8 * s, "ladron", brazos="frente")
+        monigote(d, cx + 270 * s, piso + 10 * s, 0.8 * s, "ladron", brazos="frente")
     elif tipo == "corte":
         ataud(d, cx, piso, 1.0 * s, roto=True, manos=True)
         # sierra
@@ -351,8 +411,8 @@ def escena(tipo, W, H):
             d.ellipse([x2 - 10 * s, y0 - 10 * s, x2 + 10 * s, y0 + 10 * s], fill=(80, 140, 230))
         etiqueta(d, cx, H * LABEL_Y, "2006 · ADN: NEGATIVO")
     elif tipo == "traslado":
-        d.rectangle([cx - 250 * s, piso - 280 * s, cx + 250 * s, piso], fill=(200, 200, 205), outline=OUT, width=5)
-        d.polygon([(cx - 280 * s, piso - 280 * s), (cx, piso - 400 * s), (cx + 280 * s, piso - 280 * s)], fill=(180, 180, 185), outline=OUT)
+        d.rectangle([cx - 250 * s, piso - 280 * s, cx + 250 * s, piso], fill=(130, 130, 138), outline=OUT, width=5)
+        d.polygon([(cx - 280 * s, piso - 280 * s), (cx, piso - 400 * s), (cx + 280 * s, piso - 280 * s)], fill=(105, 105, 112), outline=OUT)
         for dx in (-380, 380):
             for a in range(0, 360, 45):
                 d.line([(cx + dx * s, piso - 420 * s), (cx + dx * s + math.cos(math.radians(a)) * 50 * s, piso - 420 * s + math.sin(math.radians(a)) * 50 * s)], fill=AMAR, width=5)
@@ -378,7 +438,7 @@ def escena(tipo, W, H):
     else:  # peron
         monigote(d, cx, piso + 10 * s, 0.95 * s, "peron")
         etiqueta(d, cx, H * LABEL_Y, "JUAN DOMINGO PERÓN")
-    return img
+    return post(img)
 
 
 REGLAS = [  # (palabras clave, escena) — se evalúan en orden
@@ -441,24 +501,54 @@ def dibujar_sub(img, bloque, t, area, size):
     x = (x0 + x1 - total) / 2; y = (y0 + y1) / 2
     for i, p in enumerate(pal):
         col = ROJO if i == activa else BLANCO
-        d.text((x, y), p, font=f, fill=col, stroke_width=6, stroke_fill=NEGRO, anchor="lm")
+        d.text((x + 4, y + 6), p, font=f, fill=(0, 0, 0), anchor="lm")
+        d.text((x, y), p, font=f, fill=col, stroke_width=5, stroke_fill=NEGRO, anchor="lm")
         x += d.textlength(p + " ", font=f)
 
 
+IMPACTO = {"corte", "choque", "comisario", "ladron", "sable", "traslado", "cartas"}
+FLASH = {"comisario", "choque", "traslado"}
+
+
+def sfx(cambios, impactos, dur, ruta, sr=44100):
+    """Efectos sintetizados: whoosh en cada cambio de escena y golpe grave en los impactos."""
+    import numpy as np, wave
+    out = np.zeros(int((dur + 1) * sr), dtype=np.float32)
+    rng = np.random.default_rng(1)
+    def put(t, x):
+        i = int(t * sr); j = min(len(out), i + len(x)); out[i:j] += x[: j - i]
+    n = int(0.45 * sr); tt = np.linspace(0, 1, n)
+    ruido = rng.standard_normal(n).astype(np.float32)
+    # whoosh: ruido filtrado con barrido (media móvil decreciente) y envolvente
+    k = 24; ruido_f = np.convolve(ruido, np.ones(k) / k, mode="same")
+    whoosh = ruido_f * np.sin(np.pi * tt) ** 2 * 0.22
+    m = int(0.9 * sr); tb = np.arange(m) / sr
+    boom = (np.sin(2 * np.pi * (48 + 30 * np.exp(-tb * 8)) * tb) * np.exp(-tb * 4.5) * 0.55
+            + np.convolve(rng.standard_normal(m), np.ones(60) / 60, mode="same") * np.exp(-tb * 14) * 0.5).astype(np.float32)
+    for t in cambios:
+        put(max(0, t - 0.2), whoosh)
+    for t in impactos:
+        put(t, boom)
+    out = np.clip(out, -1, 1)
+    with wave.open(ruta, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(sr); w.writeframes((out * 32767).astype(np.int16).tobytes())
+
+
 def main():
+    import numpy as np
     src, salida, orient, final = sys.argv[1:5]
+    titulo = os.environ.get("TITULO", "PERÓN")
     data = json.load(open(os.path.join(src, "tiempos.json")))
     frases = data["frases"]; dur = data["duracion"] + 1.5
-    W, H = (1080, 1920) if orient == "vertical" else (1920, 1080)
-    if orient == "vertical":
-        cab = (0, 0, W, 300); zona = (0, 300, W, 1500); sub = (0, 1500, W, 1800); sub_size = 96
+    V = orient == "vertical"
+    W, H = (1080, 1920) if V else (1920, 1080)
+    if V:
+        zona = (0, 375, W, 1475); sub = (0, 1475, W, 1720); sub_size = 104
     else:
-        cab = (0, 0, W, 150); zona = (0, 0, W, H); sub = (0, 880, W, 1040); sub_size = 84
+        zona = (0, 0, W, H); sub = (0, 900, W, 1040); sub_size = 86
     zw, zh = zona[2] - zona[0], zona[3] - zona[1]
     global LABEL_Y
-    if orient != "vertical":
-        LABEL_Y = 0.17
-    # escenas por frase
+    LABEL_Y = 0.115 if V else 0.19
     esc_prev, escenas = None, []
     for f in frases:
         e = elegir(f["texto"], esc_prev); escenas.append(e); esc_prev = e
@@ -478,57 +568,91 @@ def main():
             cache[e] = escena(e, int(zw * 1.12), int(zh * 1.12))
         return cache[e]
     blq = bloques(frases)
-    # cabecera fija
-    head = Image.new("RGBA", (W, cab[3]), (0, 0, 0, 0))
-    hd = ImageDraw.Draw(head)
-    if orient == "vertical":
-        hd.rectangle([0, 0, W, cab[3]], fill=NEGRO)
-        hd.text((W / 2, 120), "LAS MANOS DE PERÓN", font=F(ANTON, 110), fill=BLANCO, anchor="mm")
-        etiqueta(hd, W / 2, 205, "CASOS QUE NADIE NOTÓ", size=44)
-        hd.line([(0, cab[3] - 4), (W, cab[3] - 4)], fill=ROJO, width=6)
+    cambios = [f["ini"] for i, f in enumerate(frases) if i and escenas[i] != escenas[i - 1]]
+    impactos = [f["ini"] for i, f in enumerate(frases) if escenas[i] in IMPACTO and (i == 0 or escenas[i] != escenas[i - 1])]
+    ruta_sfx = os.path.join(src, "sfx.wav")
+    sfx(cambios, impactos, dur, ruta_sfx)
+    # capa fija: cabecera, líneas rojas, zona de subtítulos con degradado rojo
+    capa = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    hd = ImageDraw.Draw(capa)
+    if V:
+        hd.rectangle([0, 0, W, zona[1]], fill=(8, 8, 10, 255))
+        ft = F(ANTON, 128)
+        txt = " ".join(titulo)
+        hd.text((W / 2 + 4, 170 + 5), txt, font=ft, fill=(0, 0, 0, 255), anchor="mm")
+        hd.text((W / 2, 170), txt, font=ft, fill=BLANCO, anchor="mm")
+        fe = F(ELITE, 40); tag = "CASOS QUE NADIE NOTÓ"; tw = hd.textlength(tag, font=fe)
+        hd.rectangle([W / 2 - tw / 2 - 22, 262, W / 2 + tw / 2 + 22, 318], fill=ROJO)
+        hd.text((W / 2, 290), tag, font=fe, fill=BLANCO, anchor="mm")
+        for y in range(zona[3], H):
+            t = (y - zona[3]) / (H - zona[3])
+            hd.line([(0, y), (W, y)], fill=(int(10 + 60 * t), int(6 + 6 * t), int(8 + 6 * t), 255))
+        for y in (zona[1], zona[3]):
+            hd.line([(0, y), (W, y)], fill=ROJO, width=5)
+        hd.text((W / 2, 1780), "  ".join("SÍGUEME PARA MÁS CASOS"), font=F(ELITE, 30), fill=(170, 170, 170, 255), anchor="mm")
     else:
-        hd.rectangle([0, 0, 760, 130], fill=(12, 12, 14, 210))
-        hd.text((30, 50), "LAS MANOS DE PERÓN", font=F(ANTON, 64), fill=BLANCO, anchor="lm")
-        etiqueta(hd, 210, 88, "CASOS QUE NADIE NOTÓ", size=30)
-    pie = F(BEBAS, 34)
+        for y in range(780, H):
+            t = (y - 780) / (H - 780)
+            hd.line([(0, y), (W, y)], fill=(0, 0, 0, int(215 * t)))
+        hd.rectangle([0, 0, 720, 150], fill=(8, 8, 10, 225))
+        hd.line([(0, 150), (720, 150)], fill=ROJO, width=4)
+        hd.text((40, 62), " ".join(titulo), font=F(ANTON, 76), fill=BLANCO, anchor="lm")
+        fe = F(ELITE, 28); tag = "CASOS QUE NADIE NOTÓ"; tw = hd.textlength(tag, font=fe)
+        hd.rectangle([36, 104, 36 + tw + 28, 140], fill=ROJO)
+        hd.text((50, 122), tag, font=fe, fill=BLANCO, anchor="lm")
+    # grano animado
+    rng = np.random.default_rng(4)
+    granos = []
+    for _ in range(6):
+        g = rng.normal(0, 12, (zh // 2, zw // 2)).astype(np.int16)
+        granos.append(np.repeat(np.repeat(g, 2, 0), 2, 1)[:zh, :zw, None])
     cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-           "-i", os.path.join(src, "voz.wav"),
+           "-i", os.path.join(src, "voz.wav"), "-i", ruta_sfx,
            "-filter_complex", f"anoisesrc=c=brown:a=0.02:d={dur},lowpass=f=180,volume=0.5[n];"
                               f"sine=f=55:d={dur},volume=0.025[s1];[n][s1]amix=2:normalize=0,afade=t=in:d=2[bg];"
-                              "[1:a]apad[v];[v][bg]amix=2:normalize=0:duration=shortest[a]",
-           "-map", "0:v", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
+                              "[1:a]apad[v];[2:a]volume=0.9[fx];[v][bg][fx]amix=3:normalize=0:duration=shortest[a]",
+           "-map", "0:v", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p",
            "-c:a", "aac", "-b:a", "192k", "-t", f"{dur:.2f}", "-movflags", "+faststart", salida]
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     n = int(dur * FPS); fi = 0; bi = 0
+    shake_rng = random.Random(7)
     for k in range(n):
         t = k / FPS
         while fi + 1 < len(frases) and t >= frases[fi + 1]["ini"]:
             fi += 1
         f = frases[fi]
-        prog = min(1, max(0, (t - f["ini"]) / max(0.5, f["fin"] - f["ini"] + 0.4)))
-        punch = max(0, 1 - (t - f["ini"]) * 6) * 0.05 if escenas[fi] != (escenas[fi - 1] if fi else None) else 0
-        z = 1.0 + 0.04 * prog + punch
+        nueva = escenas[fi] != (escenas[fi - 1] if fi else None)
+        dt = t - f["ini"]
+        prog = min(1, max(0, dt / max(0.5, f["fin"] - f["ini"] + 0.4)))
+        punch = max(0, 1 - dt * 5) * 0.07 if nueva else 0
+        z = 1.0 + 0.05 * prog + punch
         src_img = img_escena(escenas[fi])
-        cw, ch = src_img.size[0] / (1.12 * z) * 1.0, src_img.size[1] / (1.12 * z)
-        ox, oy = (src_img.size[0] - cw) / 2, (src_img.size[1] - ch) / 2
+        sw, sh = src_img.size
+        cw, ch = sw / (1.12 * z), sh / (1.12 * z)
+        # deriva lenta de cámara y temblor en impactos
+        ox = (sw - cw) / 2 + math.sin(t * 0.35) * sw * 0.01
+        oy = (sh - ch) / 2 + math.cos(t * 0.27) * sh * 0.008
+        if nueva and escenas[fi] in IMPACTO and dt < 0.45:
+            amp = (0.45 - dt) * 60
+            ox += shake_rng.uniform(-amp, amp); oy += shake_rng.uniform(-amp, amp)
+        ox = min(max(0, ox), sw - cw); oy = min(max(0, oy), sh - ch)
+        view = np.asarray(src_img.resize((zw, zh), Image.BILINEAR, box=(ox, oy, ox + cw, oy + ch)), dtype=np.int16)
+        view = view + granos[(k // 2) % len(granos)]
+        flick = 1.0 + 0.035 * math.sin(t * 9.1) * math.sin(t * 3.7)  # parpadeo de luz
+        view = view * flick
+        if nueva and escenas[fi] in FLASH and dt < 0.25:
+            view = view + (0.25 - dt) / 0.25 * 170
+        if dt < 0.12 and nueva:  # fundido rápido desde negro
+            view = view * (0.35 + dt / 0.12 * 0.65)
         frame = Image.new("RGB", (W, H), NEGRO)
-        frame.paste(src_img.resize((zw, zh), Image.BILINEAR, box=(ox, oy, ox + cw, oy + ch)), (zona[0], zona[1]))
-        frame.paste(head, (0, 0), head)
-        d = ImageDraw.Draw(frame)
-        if orient == "vertical":
-            d.rectangle([sub[0], sub[1], W, H], fill=(20, 6, 8))
-            d.text((W / 2, 1860), "S Í G U E M E   P A R A   M Á S   C A S O S", font=pie, fill=(150, 150, 150), anchor="mm")
-        if orient != "vertical":
-            band = Image.new("RGBA", (W, 170), (0, 0, 0, 140))
-            frame.paste(band, (0, 875), band)
+        frame.paste(Image.fromarray(np.clip(view, 0, 255).astype(np.uint8)), (zona[0], zona[1]))
+        frame.paste(capa, (0, 0), capa)
         while bi + 1 < len(blq) and t >= blq[bi + 1]["ini"]:
             bi += 1
         if blq[bi]["ini"] - 0.05 <= t <= blq[bi]["fin"] + 0.35:
             dibujar_sub(frame, blq[bi], t, sub, sub_size)
-        # barra de progreso arriba
-        d.rectangle([0, 0, int(W * t / dur), 8], fill=ROJO)
         p.stdin.write(frame.tobytes())
-        if k % (FPS * 30) == 0:
+        if k % (FPS * 60) == 0:
             print(f"{t:6.0f}s / {dur:.0f}s", flush=True)
     p.stdin.close(); p.wait()
     print("listo", salida)
