@@ -104,9 +104,20 @@ def _figura(md, x, y, s, tipo, brazos, m):
     return hy
 
 
+CARICATURA = os.environ.get("PERSONAJES") == "caricatura"
+REGISTRO = []
+
+
 def monigote(d, x, y, s=1.0, tipo="peron", brazos="abajo", boca="normal", susto=False, mira=1, luz=RIM):
-    """Silueta noir a contraluz. x,y = pies. Altura ~ 520*s."""
+    """Silueta noir a contraluz. x,y = pies. Altura ~ 520*s.
+    Con PERSONAJES=caricatura no dibuja: registra el personaje para animarlo en cada fotograma."""
     img = d._image
+    if CARICATURA:
+        humor = ("feliz" if boca == "sonrisa" else "susto" if (susto or boca == "o") else
+                 "enojo" if tipo in ("ladron", "encapuchado") else "triste" if tipo == "peron_viejo" else "normal")
+        m = -1 if x > img.size[0] * 0.58 else 1
+        REGISTRO.append(dict(tipo=tipo, x=x, y=y, alto=470 * s, brazos=brazos, humor=humor, mira=m))
+        return
     s *= 1.0
     W, H = img.size
     mask = Image.new("L", (W, H), 0)
@@ -301,6 +312,7 @@ def vignette(W, H, fuerza, _c={}):
 
 
 def escena(tipo, W, H):
+    REGISTRO.clear()
     img = Image.new("RGB", (W, H))
     cx = W // 2
     fondos = {"pueblo": "noche", "ejercito": "plaza", "isla": "isla", "multitud": "plaza", "presidente": "plaza",
@@ -331,9 +343,10 @@ def escena(tipo, W, H):
     elif tipo == "multitud":
         rnd = random.Random(5)
         for row in range(3):
-            for k in range(9):
-                x = cx - 560 * s + k * 140 * s + (row % 2) * 70 * s
-                monigote(d, x, piso + (60 + row * 70) * s, (0.32 + row * 0.06) * s, "obrero", brazos="arriba", boca="o")
+            for k in range(9 - row):
+                x = cx - 560 * s + k * 140 * s + (row % 2) * 70 * s + row * 70 * s
+                monigote(d, x, piso + (-20 + row * 45) * s, (0.40 + row * 0.08) * s, "obrero", brazos="arriba",
+                         boca="sonrisa" if (k + row) % 2 else "o")
         etiqueta(d, cx, H * LABEL_Y, "17 DE OCTUBRE")
     elif tipo == "presidente":
         monigote(d, cx, piso + 10 * s, 0.95 * s, "peron", brazos="arriba", boca="sonrisa")
@@ -605,8 +618,35 @@ def main():
     cache = {}
     def img_escena(e):
         if e not in cache:
-            cache[e] = escena(e, int(zw * 1.12), int(zh * 1.12))
+            cache[e] = (escena(e, int(zw * 1.12), int(zh * 1.12)), list(REGISTRO))
         return cache[e]
+    import personajes as PJ
+    spr_cache = {}
+    def spr(c, cerrados, escala):
+        k = (c["tipo"], c["humor"], cerrados, c["brazos"], c["mira"], int(c["alto"] * escala))
+        if k not in spr_cache:
+            sp = PJ.sprite(c["tipo"], c["humor"], cerrados, c["brazos"], c["mira"])
+            f = c["alto"] * escala / 760
+            spr_cache[k] = (sp.resize((max(1, int(sp.size[0] * f)), max(1, int(sp.size[1] * f))), Image.BILINEAR), f)
+        return spr_cache[k]
+    def componer(e, t, dt, nueva):
+        bg, chars = img_escena(e)
+        if not chars:
+            return bg
+        im = bg.copy()
+        for j, c in enumerate(chars):
+            fase = j * 1.3 + hash(c["tipo"]) % 7
+            cerrados = ((t + fase) % 3.4) < 0.13
+            pop = 1.0
+            if nueva and dt < 0.4:
+                u = dt / 0.4
+                pop = max(0.05, 1 + 0.18 * math.sin(u * math.pi * 1.5) * (1 - u) - (1 - u) ** 3 * 0.9)
+            esc = round(pop, 2)
+            sp, f = spr(c, cerrados, esc)
+            bob = math.sin((t + fase) * 2.6) * 6
+            px = int(c["x"] - PJ.PIES[0] * f); py = int(c["y"] - PJ.PIES[1] * f + bob)
+            im.paste(sp, (px, py), sp)
+        return im
     blq = bloques(frases)
     cambios = [f["ini"] for i, f in enumerate(frases) if i and escenas[i] != escenas[i - 1]]
     impactos = [f["ini"] for i, f in enumerate(frases) if escenas[i] in IMPACTO and (i == 0 or escenas[i] != escenas[i - 1])]
@@ -666,7 +706,7 @@ def main():
         prog = min(1, max(0, dt / max(0.5, f["fin"] - f["ini"] + 0.4)))
         punch = max(0, 1 - dt * 5) * 0.07 if nueva else 0
         z = 1.0 + 0.05 * prog + punch
-        src_img = img_escena(escenas[fi])
+        src_img = componer(escenas[fi], t, dt, nueva)
         sw, sh = src_img.size
         cw, ch = sw / (1.12 * z), sh / (1.12 * z)
         # deriva lenta de cámara y temblor en impactos
