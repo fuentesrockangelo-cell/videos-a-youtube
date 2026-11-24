@@ -11,11 +11,11 @@ MODEL = os.environ.get("PIPER_MODEL")  # ruta al .onnx (es_MX-ald-medium)
 SR = 22050
 PAUSA_FRASE = 0.32
 PAUSA_PARRAFO = 0.55
-EQ_RASPUTIN = "100:5|125:4|160:5|200:5|250:6|315:2|500:-1|630:-2|1600:2|2000:7|2500:3|4000:7|5000:5|10000:-3"
+EQ_RASPUTIN = os.environ.get("VOZ_EQ") or "100:5|125:4|160:5|200:5|250:6|315:2|500:-1|630:-2|1600:2|2000:7|2500:3|4000:7|5000:5|10000:-3"
 FX_LOCUTOR = ("highpass=f=75,firequalizer=gain_entry='" +
               ";".join(f"entry({b},{g})" for b, g in (x.split(":") for x in EQ_RASPUTIN.split("|"))) + "',"
               "deesser=i=0.4,acompressor=threshold=-22dB:ratio=3.5:attack=4:release=90:makeup=3,"
-              "aecho=0.8:0.35:22:0.05,alimiter=limit=0.9,loudnorm=I=-14:TP=-1.2:LRA=9")
+              + os.environ.get("VOZ_EXTRA", "aecho=0.8:0.35:22:0.05") + ",alimiter=limit=0.9,loudnorm=I=-14:TP=-1.2:LRA=9")
 FX = ("highpass=f=70,equalizer=f=180:t=q:w=1:g=3,equalizer=f=3500:t=q:w=1.5:g=2,"
       "acompressor=threshold=-20dB:ratio=3:attack=5:release=120,"
       "aecho=0.8:0.4:28:0.07,loudnorm=I=-16:TP=-1.5")
@@ -48,7 +48,8 @@ def sintetizador():
         SR = tts.sample_rate
         def say(texto):
             emo = emocion(texto)
-            a = np.asarray(tts.generate(texto, sid=KOKORO_VOZ, speed=emo["vel"]).samples, dtype=np.float32)
+            vel = emo["vel"] * float(os.environ.get("VOZ_VEL", "1"))
+            a = np.asarray(tts.generate(texto, sid=KOKORO_VOZ, speed=vel).samples, dtype=np.float32)
             return a * 10 ** (emo["db"] / 20)
         return say
     from piper import PiperVoice, SynthesisConfig
