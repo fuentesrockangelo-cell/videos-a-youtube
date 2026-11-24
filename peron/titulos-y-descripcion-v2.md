@@ -79,3 +79,33 @@ Nuevo caso cada semana 👇
 ```
 
 Recuerda: el enlace de YouTube va en **Editar perfil → Enlaces → Añadir enlace externo** → `https://www.youtube.com/@casosnadienoto` (no dentro del texto de la biografía).
+
+---
+
+## Instagram · Parte 2 (`videos/peron-parte-final.mp4`, 1:16) · descripción nueva
+
+**Texto en la portada:** ¿CASUALIDAD?
+
+```
+PARTE 2: los que investigaron empezaron a caer 💀
+.
+.
+El juez del caso murió en un choque que nunca se investigó.
+El comisario que seguía la pista recibió un disparo en la cabeza.
+El sereno del cementerio decía que lo querían matar… y lo encontraron muerto.
+
+Y una frase de Perón, años antes del robo, que hoy pone la piel de gallina 😶
+
+Casi 40 años después: ni manos, ni culpables.
+
+🎬 El caso completo (10 min) está en mi YouTube, link en el perfil 🔗
+
+👉 Tú eliges el próximo caso. Comenta:
+1️⃣ El robo del Louvre
+2️⃣ El cuerpo escondido de Evita
+3️⃣ Los diamantes que se descubrieron por un sándwich
+
+#parte2 #misterio #truecrime #historia #argentina #perón #casossinresolver #casosquenadienotó
+```
+
+**Comentario fijado:** "¿Casualidad o no? 🤔 Y vota el próximo caso: 1, 2 o 3 👇"
