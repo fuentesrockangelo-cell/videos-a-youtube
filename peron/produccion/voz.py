@@ -11,6 +11,11 @@ MODEL = os.environ.get("PIPER_MODEL")  # ruta al .onnx (es_MX-ald-medium)
 SR = 22050
 PAUSA_FRASE = 0.32
 PAUSA_PARRAFO = 0.55
+EQ_RASPUTIN = "100:5|125:4|160:5|200:5|250:6|315:2|500:-1|630:-2|1600:2|2000:7|2500:3|4000:7|5000:5|10000:-3"
+FX_LOCUTOR = ("highpass=f=75,firequalizer=gain_entry='" +
+              ";".join(f"entry({b},{g})" for b, g in (x.split(":") for x in EQ_RASPUTIN.split("|"))) + "',"
+              "deesser=i=0.4,acompressor=threshold=-22dB:ratio=3.5:attack=4:release=90:makeup=3,"
+              "aecho=0.8:0.35:22:0.05,alimiter=limit=0.9,loudnorm=I=-14:TP=-1.2:LRA=9")
 FX = ("highpass=f=70,equalizer=f=180:t=q:w=1:g=3,equalizer=f=3500:t=q:w=1.5:g=2,"
       "acompressor=threshold=-20dB:ratio=3:attack=5:release=120,"
       "aecho=0.8:0.4:28:0.07,loudnorm=I=-16:TP=-1.5")
@@ -42,13 +47,31 @@ def sintetizador():
         tts = sherpa_onnx.OfflineTts(cfg)
         SR = tts.sample_rate
         def say(texto):
-            velocidad = 0.84 if texto.endswith("...") or texto.endswith("?") else 0.9
-            return np.asarray(tts.generate(texto, sid=KOKORO_VOZ, speed=velocidad).samples, dtype=np.float32)
+            emo = emocion(texto)
+            a = np.asarray(tts.generate(texto, sid=KOKORO_VOZ, speed=emo["vel"]).samples, dtype=np.float32)
+            return a * 10 ** (emo["db"] / 20)
         return say
     from piper import PiperVoice, SynthesisConfig
     voice = PiperVoice.load(MODEL)
     cfg = SynthesisConfig(length_scale=1.1, noise_scale=0.85, noise_w_scale=1.0)
     return lambda texto: np.concatenate([c.audio_float_array for c in voice.synthesize(texto, syn_config=cfg)])
+
+
+SUSPENSO = ("nadie", "nunca", "muerto", "muere", "asesinado", "oscura", "misterio", "noche", "manos", "tumba", "ataúd")
+
+
+def emocion(texto):
+    """Ritmo y volumen de locutor según lo que dice la frase."""
+    t = texto.lower(); n = len(t.split())
+    if t.endswith("..."):
+        return dict(vel=0.84, db=-2.0)          # suspenso: lento y más bajo
+    if t.endswith("?"):
+        return dict(vel=0.88, db=0.0)           # pregunta al espectador
+    if n <= 5:
+        return dict(vel=0.92, db=+2.0)          # golpe corto: con fuerza
+    if any(w in t for w in SUSPENSO):
+        return dict(vel=0.86, db=-1.0)          # tensión
+    return dict(vel=0.93, db=0.0)               # narración
 
 
 def pausa_tras(f):
@@ -91,7 +114,8 @@ def main():
         expr = raw  # la voz ya es natural: no se fuerza la entonación
     else:
         subprocess.run([sys.executable, os.path.join(HERE, "expresion.py"), raw, expr, "132", "1.9"], check=True)
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", expr, "-af", FX, "-ar", "44100",
+    fx = FX_LOCUTOR if os.environ.get("VOZ_ESTILO") == "locutor" else FX
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", expr, "-af", fx, "-ar", "44100",
                     os.path.join(outdir, "voz.wav")], check=True)
     json.dump({"frases": lista, "duracion": t}, open(os.path.join(outdir, "tiempos.json"), "w"),
               ensure_ascii=False, indent=1)
