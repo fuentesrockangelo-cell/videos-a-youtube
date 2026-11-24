@@ -1,0 +1,18 @@
+CÓMO GENERAR LA VOZ EN GOOGLE AI STUDIO
+
+1. Entra a https://aistudio.google.com y abre "Generate speech" (Generar voz).
+2. Modo: "Single-speaker audio" (un solo narrador).
+3. Elige la voz (sugeridas: Charon, Algenib, Enceladus, Orus, Sadaltager).
+4. En "Style instructions" (instrucciones de estilo) pega:
+
+   Narrador de documental de misterio en español latino. Voz grave, pausada y cercana, con suspenso. Baja un poco la voz en los puntos suspensivos, haz una pausa antes de cada revelación y dale fuerza a las frases cortas. Natural y humano, nada robótico.
+
+5. Pega el texto de UN archivo, genera y descarga el audio.
+6. Repite con cada archivo, usando SIEMPRE la misma voz y las mismas instrucciones:
+   1-corto-parte1.txt          -> parte1.wav
+   2-corto-parte-final.txt     -> final.wav
+   3-largo-parte1.txt          -> largo1.wav
+   3-largo-parte2.txt          -> largo2.wav
+   3-largo-parte3.txt          -> largo3.wav
+7. Sube los 5 audios al chat. Yo uno el largo, saco los tiempos de cada frase
+   y rehago los 3 videos noir cambiando solo la voz.
