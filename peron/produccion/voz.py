@@ -24,11 +24,23 @@ SR = 24000
 PAUSA_PARRAFO = 0.65
 
 
+# Diferencia de timbre medida entre esta voz y Antonio (reel de Rasputín), banda: dB.
+TIMBRE_ANTONIO = {100: 2.3, 125: 2.6, 160: 0.4, 200: 2.1, 250: 7.0, 315: 1.1, 400: -0.2, 500: -0.9, 630: -2.8,
+                  800: -0.5, 1250: -1.9, 1600: 1.1, 2000: 9.6, 2500: 3.8, 3150: 1.3, 4000: 11.2, 5000: 7.4,
+                  6300: 2.9, 8000: 3.7, 10000: -1.4}
+
+
 def fx_natural():
-    """Solo ecualización suave: sin compresor ni loudnorm (aplastan la voz y la saturan)."""
+    """Solo ecualización: sin compresor ni loudnorm (aplastan la voz y la saturan).
+    VOZ_ANTONIO = fracción de la diferencia de timbre que se corrige (0.5 = parecido de timbre ~70%)."""
     cal = float(os.environ.get("VOZ_CALIDEZ", "2.5"))
-    return (f"highpass=f=60,equalizer=f=150:t=q:w=1:g={cal},equalizer=f=3000:t=q:w=1.5:g=-1.5,"
+    base = (f"highpass=f=60,equalizer=f=150:t=q:w=1:g={cal},equalizer=f=3000:t=q:w=1.5:g=-1.5,"
             "highshelf=f=6000:g=-4.5")
+    k = float(os.environ.get("VOZ_ANTONIO", "0"))
+    if k:
+        eq = ";".join(f"entry({b},{max(-7, min(7, g * k)):.1f})" for b, g in TIMBRE_ANTONIO.items())
+        base += f",firequalizer=gain_entry='{eq}',volume=-3dB"
+    return base
 
 
 def dinamica(a, lista, sr):
