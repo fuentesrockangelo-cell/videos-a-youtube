@@ -1,0 +1,1475 @@
+{
+ "frases": [
+  {
+   "texto": "Abren el ataúd del hombre más poderoso de Argentina...",
+   "fin_parrafo": false,
+   "ini": 0.182917,
+   "fin": 3.83137,
+   "match": 1.0
+  },
+  {
+   "texto": "y le faltan las manos.",
+   "fin_parrafo": true,
+   "ini": 4.76029,
+   "fin": 5.99508,
+   "match": 1.0
+  },
+  {
+   "texto": "No es una leyenda.",
+   "fin_parrafo": false,
+   "ini": 7.32454,
+   "fin": 8.09075,
+   "match": 0.75
+  },
+  {
+   "texto": "No es una película.",
+   "fin_parrafo": false,
+   "ini": 8.88846,
+   "fin": 9.97608,
+   "match": 0.75
+  },
+  {
+   "texto": "Pasó en mil novecientos ochenta y siete, en un cementerio de Buenos Aires.",
+   "fin_parrafo": true,
+   "ini": 11.1201,
+   "fin": 15.7994,
+   "match": 1.0
+  },
+  {
+   "texto": "Alguien atravesó un vidrio blindado, cortó las dos manos de un expresidente, y se las llevó.",
+   "fin_parrafo": true,
+   "ini": 17.2019,
+   "fin": 23.3685,
+   "match": 0.875
+  },
+  {
+   "texto": "Y lo más raro no es el robo.",
+   "fin_parrafo": false,
+   "ini": 25.0661,
+   "fin": 27.1244,
+   "match": 0.75
+  },
+  {
+   "texto": "Lo más raro es lo que les pasó a los que intentaron descubrir quién fue.",
+   "fin_parrafo": false,
+   "ini": 27.6046,
+   "fin": 31.5249,
+   "match": 1.0
+  },
+  {
+   "texto": "Un juez muerto.",
+   "fin_parrafo": false,
+   "ini": 32.8114,
+   "fin": 33.6395,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "Un comisario con un disparo en la cabeza.",
+   "fin_parrafo": false,
+   "ini": 34.2293,
+   "fin": 36.5671,
+   "match": 1.0
+  },
+  {
+   "texto": "Un testigo asesinado.",
+   "fin_parrafo": true,
+   "ini": 37.6318,
+   "fin": 38.8465,
+   "match": 1.0
+  },
+  {
+   "texto": "Casi cuarenta años después, nadie sabe dónde están esas manos.",
+   "fin_parrafo": true,
+   "ini": 40.756,
+   "fin": 44.9235,
+   "match": 1.0
+  },
+  {
+   "texto": "Pero hay una frase.",
+   "fin_parrafo": false,
+   "ini": 46.361,
+   "fin": 47.1233,
+   "match": 1.0
+  },
+  {
+   "texto": "Una frase que este hombre habría dicho años antes de morir...",
+   "fin_parrafo": false,
+   "ini": 47.5908,
+   "fin": 50.7797,
+   "match": 1.0
+  },
+  {
+   "texto": "y que, cuando la escuches al final, te va a poner la piel de gallina.",
+   "fin_parrafo": true,
+   "ini": 51.3793,
+   "fin": 56.4366,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "Para entender por qué alguien querría esas manos, hay que volver al día en que naciste.",
+   "fin_parrafo": true,
+   "ini": 58.0796,
+   "fin": 62.184,
+   "match": 0.9375
+  },
+  {
+   "texto": "Naces en mil ochocientos noventa y cinco, en Lobos, un pueblo de la provincia de Buenos Aires.",
+   "fin_parrafo": false,
+   "ini": 63.3975,
+   "fin": 68.4002,
+   "match": 1.0
+  },
+  {
+   "texto": "Te llamas Juan Domingo Perón.",
+   "fin_parrafo": true,
+   "ini": 69.3269,
+   "fin": 70.9411,
+   "match": 1.0
+  },
+  {
+   "texto": "No eres rico.",
+   "fin_parrafo": false,
+   "ini": 72.2247,
+   "fin": 72.8475,
+   "match": 1.0
+  },
+  {
+   "texto": "No eres famoso.",
+   "fin_parrafo": false,
+   "ini": 73.3072,
+   "fin": 73.9366,
+   "match": 1.0
+  },
+  {
+   "texto": "Pero tienes algo que muy pocos tienen: sabes hablarle a la gente.",
+   "fin_parrafo": true,
+   "ini": 74.939,
+   "fin": 79.0459,
+   "match": 1.0
+  },
+  {
+   "texto": "Entras al ejército muy joven.",
+   "fin_parrafo": false,
+   "ini": 80.196,
+   "fin": 81.4886,
+   "match": 0.8
+  },
+  {
+   "texto": "Subes de rango, año tras año.",
+   "fin_parrafo": false,
+   "ini": 81.7664,
+   "fin": 83.8208,
+   "match": 0.8333333333333334
+  },
+  {
+   "texto": "Y cuando tienes casi cincuenta, ya no eres un militar más.",
+   "fin_parrafo": true,
+   "ini": 84.6384,
+   "fin": 87.9224,
+   "match": 1.0
+  },
+  {
+   "texto": "En mil novecientos cuarenta y tres, un grupo de militares toma el poder en Argentina.",
+   "fin_parrafo": false,
+   "ini": 89.1896,
+   "fin": 92.707,
+   "match": 1.0
+  },
+  {
+   "texto": "Tú estás entre ellos.",
+   "fin_parrafo": true,
+   "ini": 92.9913,
+   "fin": 94.4494,
+   "match": 1.0
+  },
+  {
+   "texto": "Y eliges un puesto que nadie quería: te encargas de los trabajadores.",
+   "fin_parrafo": true,
+   "ini": 95.7015,
+   "fin": 100.09,
+   "match": 0.9166666666666666
+  },
+  {
+   "texto": "Les das derechos que nunca habían tenido.",
+   "fin_parrafo": false,
+   "ini": 101.172,
+   "fin": 102.863,
+   "match": 1.0
+  },
+  {
+   "texto": "Vacaciones pagadas.",
+   "fin_parrafo": false,
+   "ini": 103.694,
+   "fin": 104.679,
+   "match": 1.0
+  },
+  {
+   "texto": "Aguinaldo.",
+   "fin_parrafo": false,
+   "ini": 104.729,
+   "fin": 106.526,
+   "match": 0.0
+  },
+  {
+   "texto": "Tribunales para defenderlos.",
+   "fin_parrafo": true,
+   "ini": 106.576,
+   "fin": 108.026,
+   "match": 1.0
+  },
+  {
+   "texto": "Los obreros empiezan a amarte.",
+   "fin_parrafo": false,
+   "ini": 109.294,
+   "fin": 110.778,
+   "match": 0.8
+  },
+  {
+   "texto": "Y tus compañeros militares empiezan a tenerte miedo.",
+   "fin_parrafo": true,
+   "ini": 111.507,
+   "fin": 114.34,
+   "match": 1.0
+  },
+  {
+   "texto": "Tanto miedo, que en octubre de mil novecientos cuarenta y cinco te obligan a renunciar...",
+   "fin_parrafo": false,
+   "ini": 115.596,
+   "fin": 119.694,
+   "match": 1.0
+  },
+  {
+   "texto": "y te encierran en una isla.",
+   "fin_parrafo": true,
+   "ini": 120.468,
+   "fin": 121.684,
+   "match": 0.8333333333333334
+  },
+  {
+   "texto": "Parecía tu final.",
+   "fin_parrafo": false,
+   "ini": 123.016,
+   "fin": 123.808,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "Pero no lo era.",
+   "fin_parrafo": true,
+   "ini": 124.877,
+   "fin": 125.509,
+   "match": 0.75
+  },
+  {
+   "texto": "El diecisiete de octubre, una multitud de trabajadores marcha hasta la Plaza de Mayo.",
+   "fin_parrafo": false,
+   "ini": 126.628,
+   "fin": 131.447,
+   "match": 0.8571428571428571
+  },
+  {
+   "texto": "Cientos de miles de personas.",
+   "fin_parrafo": false,
+   "ini": 132.181,
+   "fin": 133.872,
+   "match": 1.0
+  },
+  {
+   "texto": "Gritan tu nombre.",
+   "fin_parrafo": false,
+   "ini": 134.628,
+   "fin": 135.494,
+   "match": 1.0
+  },
+  {
+   "texto": "No se van.",
+   "fin_parrafo": true,
+   "ini": 136.347,
+   "fin": 136.769,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "Y esa misma noche, te liberan.",
+   "fin_parrafo": true,
+   "ini": 137.883,
+   "fin": 139.766,
+   "match": 0.8333333333333334
+  },
+  {
+   "texto": "A tu lado está una mujer joven, actriz de radio.",
+   "fin_parrafo": false,
+   "ini": 140.856,
+   "fin": 143.747,
+   "match": 0.9
+  },
+  {
+   "texto": "Se llama Eva Duarte.",
+   "fin_parrafo": false,
+   "ini": 144.16,
+   "fin": 144.673,
+   "match": 0.5
+  },
+  {
+   "texto": "El país la va a conocer como Evita.",
+   "fin_parrafo": true,
+   "ini": 146.382,
+   "fin": 148.528,
+   "match": 1.0
+  },
+  {
+   "texto": "Te casas con ella.",
+   "fin_parrafo": false,
+   "ini": 149.473,
+   "fin": 150.363,
+   "match": 1.0
+  },
+  {
+   "texto": "Y meses después, ganas las elecciones.",
+   "fin_parrafo": true,
+   "ini": 150.999,
+   "fin": 154.557,
+   "match": 1.0
+  },
+  {
+   "texto": "En mil novecientos cuarenta y seis eres presidente de Argentina.",
+   "fin_parrafo": true,
+   "ini": 155.293,
+   "fin": 159.553,
+   "match": 1.0
+  },
+  {
+   "texto": "Durante años eres casi intocable.",
+   "fin_parrafo": false,
+   "ini": 160.854,
+   "fin": 163.277,
+   "match": 1.0
+  },
+  {
+   "texto": "Ganas otra vez.",
+   "fin_parrafo": false,
+   "ini": 163.779,
+   "fin": 164.749,
+   "match": 1.0
+  },
+  {
+   "texto": "Evita se convierte en la mujer más querida y más odiada del país.",
+   "fin_parrafo": true,
+   "ini": 165.204,
+   "fin": 169.382,
+   "match": 1.0
+  },
+  {
+   "texto": "Pero en mil novecientos cincuenta y dos, Evita muere de cáncer.",
+   "fin_parrafo": false,
+   "ini": 170.603,
+   "fin": 174.222,
+   "match": 0.8181818181818182
+  },
+  {
+   "texto": "Tiene treinta y tres años.",
+   "fin_parrafo": true,
+   "ini": 175.086,
+   "fin": 176.325,
+   "match": 1.0
+  },
+  {
+   "texto": "Su cuerpo es embalsamado.",
+   "fin_parrafo": false,
+   "ini": 177.015,
+   "fin": 178.752,
+   "match": 0.75
+  },
+  {
+   "texto": "Lo preparan para durar para siempre.",
+   "fin_parrafo": true,
+   "ini": 179.385,
+   "fin": 181.573,
+   "match": 1.0
+  },
+  {
+   "texto": "Y aquí empieza algo que nadie te contó en la escuela.",
+   "fin_parrafo": false,
+   "ini": 182.722,
+   "fin": 185.692,
+   "match": 0.9090909090909091
+  },
+  {
+   "texto": "Porque en esta historia, los cuerpos no descansan.",
+   "fin_parrafo": true,
+   "ini": 186.227,
+   "fin": 189.043,
+   "match": 0.875
+  },
+  {
+   "texto": "En mil novecientos cincuenta y cinco, los militares te derrocan.",
+   "fin_parrafo": false,
+   "ini": 190.377,
+   "fin": 193.451,
+   "match": 1.0
+  },
+  {
+   "texto": "Te vas al exilio.",
+   "fin_parrafo": false,
+   "ini": 194.033,
+   "fin": 194.793,
+   "match": 0.75
+  },
+  {
+   "texto": "Paraguay.",
+   "fin_parrafo": false,
+   "ini": 194.84300000000002,
+   "fin": 197.689,
+   "match": 0.0
+  },
+  {
+   "texto": "Panamá.",
+   "fin_parrafo": false,
+   "ini": 197.739,
+   "fin": 197.689,
+   "match": 0.0
+  },
+  {
+   "texto": "Venezuela.",
+   "fin_parrafo": false,
+   "ini": 197.739,
+   "fin": 198.232,
+   "match": 1.0
+  },
+  {
+   "texto": "República Dominicana.",
+   "fin_parrafo": false,
+   "ini": 198.896,
+   "fin": 199.939,
+   "match": 1.0
+  },
+  {
+   "texto": "Y al final, España.",
+   "fin_parrafo": true,
+   "ini": 200.575,
+   "fin": 201.909,
+   "match": 0.75
+  },
+  {
+   "texto": "Y mientras tú huyes...",
+   "fin_parrafo": false,
+   "ini": 202.589,
+   "fin": 203.796,
+   "match": 1.0
+  },
+  {
+   "texto": "el cuerpo de Evita desaparece.",
+   "fin_parrafo": true,
+   "ini": 204.412,
+   "fin": 206.294,
+   "match": 0.8
+  },
+  {
+   "texto": "Los militares que te sacaron del poder se lo llevan.",
+   "fin_parrafo": false,
+   "ini": 207.025,
+   "fin": 209.557,
+   "match": 0.8
+  },
+  {
+   "texto": "Lo esconden.",
+   "fin_parrafo": false,
+   "ini": 210.111,
+   "fin": 210.669,
+   "match": 0.5
+  },
+  {
+   "texto": "Lo mueven de un lugar a otro.",
+   "fin_parrafo": false,
+   "ini": 211.071,
+   "fin": 212.695,
+   "match": 1.0
+  },
+  {
+   "texto": "Y lo terminan enterrando en Italia, bajo un nombre falso.",
+   "fin_parrafo": true,
+   "ini": 212.967,
+   "fin": 216.064,
+   "match": 1.0
+  },
+  {
+   "texto": "Durante dieciséis años, nadie sabe dónde está.",
+   "fin_parrafo": true,
+   "ini": 216.778,
+   "fin": 220.09,
+   "match": 1.0
+  },
+  {
+   "texto": "Recuerda esto.",
+   "fin_parrafo": false,
+   "ini": 220.765,
+   "fin": 221.65,
+   "match": 1.0
+  },
+  {
+   "texto": "Porque al final del video, el cuerpo de Evita va a volver a aparecer en esta historia.",
+   "fin_parrafo": true,
+   "ini": 222.213,
+   "fin": 226.442,
+   "match": 1.0
+  },
+  {
+   "texto": "Pasan dieciocho años.",
+   "fin_parrafo": false,
+   "ini": 227.499,
+   "fin": 228.793,
+   "match": 1.0
+  },
+  {
+   "texto": "Y en mil novecientos setenta y tres, lo imposible ocurre: vuelves a Argentina.",
+   "fin_parrafo": false,
+   "ini": 229.093,
+   "fin": 234.196,
+   "match": 1.0
+  },
+  {
+   "texto": "Y ganas otra vez.",
+   "fin_parrafo": true,
+   "ini": 234.607,
+   "fin": 236.099,
+   "match": 1.0
+  },
+  {
+   "texto": "Presidente por tercera vez.",
+   "fin_parrafo": false,
+   "ini": 236.995,
+   "fin": 238.369,
+   "match": 1.0
+  },
+  {
+   "texto": "Tu vicepresidenta es tu tercera esposa, Isabel.",
+   "fin_parrafo": true,
+   "ini": 238.724,
+   "fin": 240.796,
+   "match": 0.8571428571428571
+  },
+  {
+   "texto": "Pero ya no eres joven.",
+   "fin_parrafo": false,
+   "ini": 242.341,
+   "fin": 243.08,
+   "match": 0.8
+  },
+  {
+   "texto": "Tienes setenta y ocho años.",
+   "fin_parrafo": false,
+   "ini": 243.706,
+   "fin": 244.872,
+   "match": 0.8
+  },
+  {
+   "texto": "Y tu corazón está cansado.",
+   "fin_parrafo": true,
+   "ini": 245.244,
+   "fin": 246.334,
+   "match": 1.0
+  },
+  {
+   "texto": "El primero de julio de mil novecientos setenta y cuatro, mueres.",
+   "fin_parrafo": true,
+   "ini": 247.213,
+   "fin": 250.6,
+   "match": 0.9090909090909091
+  },
+  {
+   "texto": "Millones de personas lloran en las calles.",
+   "fin_parrafo": false,
+   "ini": 251.258,
+   "fin": 253.315,
+   "match": 1.0
+  },
+  {
+   "texto": "Y tu cuerpo termina en la bóveda de tu familia, en el cementerio de la Chacarita.",
+   "fin_parrafo": true,
+   "ini": 254.111,
+   "fin": 258.426,
+   "match": 0.9375
+  },
+  {
+   "texto": "Ahí te protegen como a nadie.",
+   "fin_parrafo": false,
+   "ini": 259.559,
+   "fin": 260.753,
+   "match": 1.0
+  },
+  {
+   "texto": "Tu ataúd queda bajo un vidrio blindado de ocho centímetros.",
+   "fin_parrafo": false,
+   "ini": 261.378,
+   "fin": 264.324,
+   "match": 0.9
+  },
+  {
+   "texto": "Las llaves quedan en manos del gobierno.",
+   "fin_parrafo": true,
+   "ini": 264.724,
+   "fin": 266.41,
+   "match": 1.0
+  },
+  {
+   "texto": "Nadie podría tocarte.",
+   "fin_parrafo": false,
+   "ini": 267.189,
+   "fin": 268.333,
+   "match": 1.0
+  },
+  {
+   "texto": "Eso creían.",
+   "fin_parrafo": true,
+   "ini": 268.38300000000004,
+   "fin": 270.632,
+   "match": 0.0
+  },
+  {
+   "texto": "Pasan trece años.",
+   "fin_parrafo": true,
+   "ini": 270.682,
+   "fin": 271.486,
+   "match": 1.0
+  },
+  {
+   "texto": "Es junio de mil novecientos ochenta y siete.",
+   "fin_parrafo": false,
+   "ini": 271.858,
+   "fin": 273.943,
+   "match": 1.0
+  },
+  {
+   "texto": "Argentina acaba de salir de una dictadura.",
+   "fin_parrafo": false,
+   "ini": 274.326,
+   "fin": 276.625,
+   "match": 1.0
+  },
+  {
+   "texto": "El país todavía tiene miedo.",
+   "fin_parrafo": true,
+   "ini": 277.224,
+   "fin": 278.595,
+   "match": 1.0
+  },
+  {
+   "texto": "Y una noche, alguien entra a tu bóveda.",
+   "fin_parrafo": true,
+   "ini": 279.482,
+   "fin": 281.53,
+   "match": 0.75
+  },
+  {
+   "texto": "No fuerza la puerta como un ladrón cualquiera.",
+   "fin_parrafo": false,
+   "ini": 282.165,
+   "fin": 284.112,
+   "match": 0.875
+  },
+  {
+   "texto": "Llega hasta tu ataúd.",
+   "fin_parrafo": false,
+   "ini": 284.759,
+   "fin": 285.929,
+   "match": 0.25
+  },
+  {
+   "texto": "Y empieza a trabajar sobre el vidrio blindado.",
+   "fin_parrafo": true,
+   "ini": 286.43,
+   "fin": 288.588,
+   "match": 1.0
+  },
+  {
+   "texto": "Según los peritos, tardan menos de dos horas en abrirle un agujero.",
+   "fin_parrafo": true,
+   "ini": 289.736,
+   "fin": 294.227,
+   "match": 0.9166666666666666
+  },
+  {
+   "texto": "Entonces meten las herramientas.",
+   "fin_parrafo": false,
+   "ini": 294.798,
+   "fin": 296.634,
+   "match": 1.0
+  },
+  {
+   "texto": "Y con una sierra...",
+   "fin_parrafo": false,
+   "ini": 297.083,
+   "fin": 298.087,
+   "match": 1.0
+  },
+  {
+   "texto": "te cortan las dos manos.",
+   "fin_parrafo": true,
+   "ini": 298.748,
+   "fin": 300.208,
+   "match": 1.0
+  },
+  {
+   "texto": "Se llevan también tu sable.",
+   "fin_parrafo": true,
+   "ini": 301.154,
+   "fin": 302.337,
+   "match": 1.0
+  },
+  {
+   "texto": "Y se van.",
+   "fin_parrafo": false,
+   "ini": 302.956,
+   "fin": 303.307,
+   "match": 0.3333333333333333
+  },
+  {
+   "texto": "Sin que nadie los vea.",
+   "fin_parrafo": true,
+   "ini": 304.032,
+   "fin": 305.515,
+   "match": 1.0
+  },
+  {
+   "texto": "Ahora, piensa en esto.",
+   "fin_parrafo": false,
+   "ini": 307.334,
+   "fin": 307.879,
+   "match": 0.25
+  },
+  {
+   "texto": "Si alguien quería dinero, ¿por qué no robar joyas?",
+   "fin_parrafo": false,
+   "ini": 308.559,
+   "fin": 311.701,
+   "match": 0.8888888888888888
+  },
+  {
+   "texto": "¿Por qué no robar el cuerpo completo?",
+   "fin_parrafo": true,
+   "ini": 312.312,
+   "fin": 313.763,
+   "match": 0.8571428571428571
+  },
+  {
+   "texto": "¿Por qué las manos?",
+   "fin_parrafo": true,
+   "ini": 314.687,
+   "fin": 315.81,
+   "match": 1.0
+  },
+  {
+   "texto": "Guarda esa pregunta.",
+   "fin_parrafo": false,
+   "ini": 316.756,
+   "fin": 317.639,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "Porque en unos minutos vas a escuchar las tres teorías...",
+   "fin_parrafo": false,
+   "ini": 317.967,
+   "fin": 320.621,
+   "match": 1.0
+  },
+  {
+   "texto": "y una de ellas es la más rara de todas.",
+   "fin_parrafo": true,
+   "ini": 321.133,
+   "fin": 323.34,
+   "match": 0.9
+  },
+  {
+   "texto": "Pocos días después, llegan cartas.",
+   "fin_parrafo": false,
+   "ini": 324.166,
+   "fin": 325.744,
+   "match": 1.0
+  },
+  {
+   "texto": "Tres cartas casi idénticas, a tres líderes de tu partido.",
+   "fin_parrafo": true,
+   "ini": 326.274,
+   "fin": 329.743,
+   "match": 1.0
+  },
+  {
+   "texto": "Las firma alguien que se hace llamar \"Hermes IAI y los trece\".",
+   "fin_parrafo": true,
+   "ini": 330.328,
+   "fin": 334.165,
+   "match": 0.9166666666666666
+  },
+  {
+   "texto": "Piden ocho millones de dólares.",
+   "fin_parrafo": false,
+   "ini": 334.951,
+   "fin": 336.871,
+   "match": 1.0
+  },
+  {
+   "texto": "A cambio, devolverán las manos.",
+   "fin_parrafo": true,
+   "ini": 337.428,
+   "fin": 339.122,
+   "match": 0.8
+  },
+  {
+   "texto": "Al principio, muchos piensan que es una broma de mal gusto.",
+   "fin_parrafo": true,
+   "ini": 340.001,
+   "fin": 342.376,
+   "match": 0.9090909090909091
+  },
+  {
+   "texto": "Pero dentro de cada carta hay algo que cambia todo.",
+   "fin_parrafo": true,
+   "ini": 343.275,
+   "fin": 345.789,
+   "match": 1.0
+  },
+  {
+   "texto": "Un trozo de papel.",
+   "fin_parrafo": false,
+   "ini": 346.829,
+   "fin": 347.958,
+   "match": 1.0
+  },
+  {
+   "texto": "Es parte de una carta que tu viuda, Isabel, había dejado dentro de tu tumba.",
+   "fin_parrafo": true,
+   "ini": 348.626,
+   "fin": 353.153,
+   "match": 0.8
+  },
+  {
+   "texto": "Nadie podía tener ese papel...",
+   "fin_parrafo": false,
+   "ini": 353.798,
+   "fin": 355.18,
+   "match": 1.0
+  },
+  {
+   "texto": "salvo alguien que hubiera estado ahí dentro.",
+   "fin_parrafo": true,
+   "ini": 355.76,
+   "fin": 357.337,
+   "match": 0.8571428571428571
+  },
+  {
+   "texto": "Ya no era una broma.",
+   "fin_parrafo": false,
+   "ini": 358.199,
+   "fin": 358.926,
+   "match": 0.8
+  },
+  {
+   "texto": "Era real.",
+   "fin_parrafo": true,
+   "ini": 359.578,
+   "fin": 360.106,
+   "match": 1.0
+  },
+  {
+   "texto": "Abren la bóveda.",
+   "fin_parrafo": false,
+   "ini": 360.979,
+   "fin": 361.697,
+   "match": 0.3333333333333333
+  },
+  {
+   "texto": "Y lo confirman: tus manos ya no están.",
+   "fin_parrafo": true,
+   "ini": 362.334,
+   "fin": 364.896,
+   "match": 0.875
+  },
+  {
+   "texto": "El caso cae en manos de un juez: Jaime Far Suau.",
+   "fin_parrafo": false,
+   "ini": 365.712,
+   "fin": 367.264,
+   "match": 0.6363636363636364
+  },
+  {
+   "texto": "Él mismo entra a la bóveda.",
+   "fin_parrafo": false,
+   "ini": 368.876,
+   "fin": 370.308,
+   "match": 1.0
+  },
+  {
+   "texto": "Ve el ataúd.",
+   "fin_parrafo": false,
+   "ini": 370.358,
+   "fin": 372.235,
+   "match": 0.0
+  },
+  {
+   "texto": "Y confirma que las manos fueron cortadas con herramientas manuales.",
+   "fin_parrafo": true,
+   "ini": 372.285,
+   "fin": 375.183,
+   "match": 1.0
+  },
+  {
+   "texto": "Y entonces, empieza lo peor.",
+   "fin_parrafo": true,
+   "ini": 376.041,
+   "fin": 377.598,
+   "match": 1.0
+  },
+  {
+   "texto": "Primero, un comisario que seguía la pista, Carlos Zunino.",
+   "fin_parrafo": false,
+   "ini": 378.103,
+   "fin": 381.24,
+   "match": 0.8888888888888888
+  },
+  {
+   "texto": "Unos desconocidos entran a su casa.",
+   "fin_parrafo": false,
+   "ini": 382.044,
+   "fin": 383.575,
+   "match": 1.0
+  },
+  {
+   "texto": "Le disparan en la cabeza.",
+   "fin_parrafo": true,
+   "ini": 384.195,
+   "fin": 385.361,
+   "match": 1.0
+  },
+  {
+   "texto": "Sobrevive de milagro.",
+   "fin_parrafo": true,
+   "ini": 386.255,
+   "fin": 387.17,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "Después, el sereno del cementerio.",
+   "fin_parrafo": false,
+   "ini": 388.04,
+   "fin": 389.921,
+   "match": 0.8
+  },
+  {
+   "texto": "Se llamaba Paulino Lavagno.",
+   "fin_parrafo": false,
+   "ini": 390.265,
+   "fin": 391.749,
+   "match": 0.75
+  },
+  {
+   "texto": "Había dicho que lo querían matar.",
+   "fin_parrafo": true,
+   "ini": 392.189,
+   "fin": 393.525,
+   "match": 1.0
+  },
+  {
+   "texto": "Poco después, lo encuentran muerto cerca del cementerio.",
+   "fin_parrafo": false,
+   "ini": 394.394,
+   "fin": 397.184,
+   "match": 0.875
+  },
+  {
+   "texto": "Según la prensa de la época, la autopsia dice que fue asesinado.",
+   "fin_parrafo": true,
+   "ini": 397.857,
+   "fin": 401.158,
+   "match": 0.8333333333333334
+  },
+  {
+   "texto": "Y en noviembre de mil novecientos ochenta y ocho, el juez Far Suau muere en un accidente de auto, junto a su pareja.",
+   "fin_parrafo": true,
+   "ini": 402.014,
+   "fin": 408.045,
+   "match": 0.6521739130434783
+  },
+  {
+   "texto": "El peritaje de ese accidente nunca se hizo.",
+   "fin_parrafo": true,
+   "ini": 408.815,
+   "fin": 410.928,
+   "match": 1.0
+  },
+  {
+   "texto": "Un juez muerto.",
+   "fin_parrafo": false,
+   "ini": 411.838,
+   "fin": 412.553,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "Un comisario baleado.",
+   "fin_parrafo": false,
+   "ini": 413.225,
+   "fin": 414.123,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "Un testigo asesinado.",
+   "fin_parrafo": true,
+   "ini": 414.871,
+   "fin": 415.887,
+   "match": 1.0
+  },
+  {
+   "texto": "¿Casualidad?",
+   "fin_parrafo": false,
+   "ini": 416.747,
+   "fin": 417.203,
+   "match": 1.0
+  },
+  {
+   "texto": "Nadie lo ha podido demostrar.",
+   "fin_parrafo": false,
+   "ini": 418.082,
+   "fin": 419.244,
+   "match": 0.8
+  },
+  {
+   "texto": "Pero tampoco nadie lo ha podido descartar.",
+   "fin_parrafo": true,
+   "ini": 420.172,
+   "fin": 421.937,
+   "match": 0.8571428571428571
+  },
+  {
+   "texto": "Pasan los años.",
+   "fin_parrafo": false,
+   "ini": 422.922,
+   "fin": 423.573,
+   "match": 0.3333333333333333
+  },
+  {
+   "texto": "La causa se enfría.",
+   "fin_parrafo": true,
+   "ini": 424.326,
+   "fin": 425.146,
+   "match": 0.75
+  },
+  {
+   "texto": "Hasta que, en mil novecientos noventa y cuatro, aparece algo donde no debía estar.",
+   "fin_parrafo": true,
+   "ini": 425.765,
+   "fin": 432.776,
+   "match": 0.9285714285714286
+  },
+  {
+   "texto": "En una comisaría de Buenos Aires encuentran un juego de llaves.",
+   "fin_parrafo": false,
+   "ini": 433.908,
+   "fin": 437.57,
+   "match": 1.0
+  },
+  {
+   "texto": "Son las llaves del vidrio blindado de tu ataúd.",
+   "fin_parrafo": true,
+   "ini": 438.323,
+   "fin": 441.444,
+   "match": 1.0
+  },
+  {
+   "texto": "¿Qué hacían ahí?",
+   "fin_parrafo": false,
+   "ini": 442.608,
+   "fin": 443.339,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "¿Quién las llevó?",
+   "fin_parrafo": false,
+   "ini": 443.389,
+   "fin": 446.063,
+   "match": 0.0
+  },
+  {
+   "texto": "Nadie lo explicó.",
+   "fin_parrafo": true,
+   "ini": 446.113,
+   "fin": 446.934,
+   "match": 1.0
+  },
+  {
+   "texto": "El caso se reabre.",
+   "fin_parrafo": false,
+   "ini": 448.111,
+   "fin": 449.228,
+   "match": 1.0
+  },
+  {
+   "texto": "Y otra vez, no llega a ningún lado.",
+   "fin_parrafo": true,
+   "ini": 449.479,
+   "fin": 452.017,
+   "match": 1.0
+  },
+  {
+   "texto": "Y en dos mil ocho, ocurre algo casi absurdo: roban expedientes de la causa que investigaba el robo.",
+   "fin_parrafo": true,
+   "ini": 453.061,
+   "fin": 459.757,
+   "match": 1.0
+  },
+  {
+   "texto": "Roban los papeles del robo.",
+   "fin_parrafo": true,
+   "ini": 460.755,
+   "fin": 462.47,
+   "match": 1.0
+  },
+  {
+   "texto": "Entonces, vamos a la pregunta que guardaste.",
+   "fin_parrafo": false,
+   "ini": 463.859,
+   "fin": 466.369,
+   "match": 1.0
+  },
+  {
+   "texto": "¿Para qué alguien querría las manos de un muerto?",
+   "fin_parrafo": true,
+   "ini": 467.382,
+   "fin": 470.035,
+   "match": 1.0
+  },
+  {
+   "texto": "Primera teoría: el dinero.",
+   "fin_parrafo": true,
+   "ini": 471.404,
+   "fin": 473.23,
+   "match": 1.0
+  },
+  {
+   "texto": "Hay quien dice que tus manos eran la llave de una cuenta secreta en Suiza.",
+   "fin_parrafo": false,
+   "ini": 474.072,
+   "fin": 477.096,
+   "match": 0.8666666666666667
+  },
+  {
+   "texto": "Que con tus huellas se podía abrir una caja de seguridad.",
+   "fin_parrafo": false,
+   "ini": 477.618,
+   "fin": 480.266,
+   "match": 1.0
+  },
+  {
+   "texto": "Suena a película.",
+   "fin_parrafo": false,
+   "ini": 481.298,
+   "fin": 482.356,
+   "match": 1.0
+  },
+  {
+   "texto": "Y nunca se ha probado.",
+   "fin_parrafo": true,
+   "ini": 482.73,
+   "fin": 484.0,
+   "match": 1.0
+  },
+  {
+   "texto": "Segunda teoría: el rescate.",
+   "fin_parrafo": true,
+   "ini": 485.276,
+   "fin": 487.351,
+   "match": 0.75
+  },
+  {
+   "texto": "Que todo fue un golpe para cobrar los ocho millones.",
+   "fin_parrafo": false,
+   "ini": 488.278,
+   "fin": 490.76,
+   "match": 1.0
+  },
+  {
+   "texto": "Pero si era por dinero, ¿por qué nadie volvió a pedirlo?",
+   "fin_parrafo": false,
+   "ini": 491.384,
+   "fin": 494.632,
+   "match": 0.7272727272727273
+  },
+  {
+   "texto": "¿Por qué no hubo más cartas, más pruebas, más amenazas?",
+   "fin_parrafo": false,
+   "ini": 495.18,
+   "fin": 497.906,
+   "match": 0.8
+  },
+  {
+   "texto": "La mayoría de los investigadores no cree en esta versión.",
+   "fin_parrafo": true,
+   "ini": 498.79,
+   "fin": 501.706,
+   "match": 0.8
+  },
+  {
+   "texto": "Y la tercera teoría...",
+   "fin_parrafo": false,
+   "ini": 503.051,
+   "fin": 504.064,
+   "match": 1.0
+  },
+  {
+   "texto": "es la más oscura.",
+   "fin_parrafo": true,
+   "ini": 504.724,
+   "fin": 505.697,
+   "match": 0.75
+  },
+  {
+   "texto": "Una logia secreta italiana, llamada P2, dirigida por un hombre llamado Licio Gelli.",
+   "fin_parrafo": true,
+   "ini": 506.667,
+   "fin": 511.924,
+   "match": 0.9230769230769231
+  },
+  {
+   "texto": "Unos periodistas aseguran que fue él quien ordenó el robo.",
+   "fin_parrafo": false,
+   "ini": 512.787,
+   "fin": 515.385,
+   "match": 1.0
+  },
+  {
+   "texto": "Gelli lo negó.",
+   "fin_parrafo": false,
+   "ini": 515.435,
+   "fin": 517.586,
+   "match": 0.0
+  },
+  {
+   "texto": "Y otros investigadores descartaron esa pista.",
+   "fin_parrafo": true,
+   "ini": 517.636,
+   "fin": 519.945,
+   "match": 1.0
+  },
+  {
+   "texto": "Pero hay un detalle que no deja de dar vueltas.",
+   "fin_parrafo": true,
+   "ini": 520.934,
+   "fin": 523.412,
+   "match": 1.0
+  },
+  {
+   "texto": "¿Recuerdas el cuerpo de Evita, escondido en Italia?",
+   "fin_parrafo": true,
+   "ini": 524.388,
+   "fin": 527.114,
+   "match": 0.875
+  },
+  {
+   "texto": "Según un libro sobre tu vida, años antes de morir, alguien te ofreció ayuda para recuperar ese cuerpo.",
+   "fin_parrafo": false,
+   "ini": 528.066,
+   "fin": 533.544,
+   "match": 1.0
+  },
+  {
+   "texto": "Y tú habrías respondido algo así:",
+   "fin_parrafo": true,
+   "ini": 534.44,
+   "fin": 536.118,
+   "match": 1.0
+  },
+  {
+   "texto": "Que antes de aceptar...",
+   "fin_parrafo": false,
+   "ini": 537.184,
+   "fin": 538.118,
+   "match": 1.0
+  },
+  {
+   "texto": "te cortarías las manos.",
+   "fin_parrafo": true,
+   "ini": 538.831,
+   "fin": 540.014,
+   "match": 1.0
+  },
+  {
+   "texto": "Y años después, alguien te las cortó.",
+   "fin_parrafo": true,
+   "ini": 541.105,
+   "fin": 543.503,
+   "match": 1.0
+  },
+  {
+   "texto": "¿Coincidencia?",
+   "fin_parrafo": false,
+   "ini": 544.656,
+   "fin": 545.265,
+   "match": 1.0
+  },
+  {
+   "texto": "¿Venganza?",
+   "fin_parrafo": false,
+   "ini": 545.3149999999999,
+   "fin": 547.5790000000001,
+   "match": 0.0
+  },
+  {
+   "texto": "¿Un mensaje?",
+   "fin_parrafo": false,
+   "ini": 547.629,
+   "fin": 548.264,
+   "match": 1.0
+  },
+  {
+   "texto": "Nadie lo sabe.",
+   "fin_parrafo": true,
+   "ini": 549.242,
+   "fin": 550.025,
+   "match": 1.0
+  },
+  {
+   "texto": "En dos mil seis, tu cuerpo vuelve a salir de la tumba.",
+   "fin_parrafo": false,
+   "ini": 550.998,
+   "fin": 553.925,
+   "match": 1.0
+  },
+  {
+   "texto": "Una mujer asegura ser tu hija.",
+   "fin_parrafo": false,
+   "ini": 554.732,
+   "fin": 556.242,
+   "match": 1.0
+  },
+  {
+   "texto": "Toman muestras de tus restos para un examen de ADN.",
+   "fin_parrafo": true,
+   "ini": 556.934,
+   "fin": 559.452,
+   "match": 0.9
+  },
+  {
+   "texto": "El resultado: negativo.",
+   "fin_parrafo": true,
+   "ini": 560.507,
+   "fin": 562.369,
+   "match": 1.0
+  },
+  {
+   "texto": "Ese mismo año trasladan tu cuerpo a un mausoleo en San Vicente, a las afueras de Buenos Aires.",
+   "fin_parrafo": false,
+   "ini": 563.337,
+   "fin": 568.115,
+   "match": 0.8888888888888888
+  },
+  {
+   "texto": "Y hasta ese día termina en violencia: grupos de sindicatos se enfrentan a tiros durante el traslado.",
+   "fin_parrafo": true,
+   "ini": 568.757,
+   "fin": 575.785,
+   "match": 1.0
+  },
+  {
+   "texto": "Ni siquiera en tu último viaje hubo paz.",
+   "fin_parrafo": true,
+   "ini": 576.538,
+   "fin": 579.523,
+   "match": 1.0
+  },
+  {
+   "texto": "Hoy, casi cuarenta años después del robo, esto es lo único seguro.",
+   "fin_parrafo": true,
+   "ini": 580.587,
+   "fin": 585.736,
+   "match": 1.0
+  },
+  {
+   "texto": "Las manos nunca aparecieron.",
+   "fin_parrafo": true,
+   "ini": 586.542,
+   "fin": 588.061,
+   "match": 1.0
+  },
+  {
+   "texto": "Nadie fue condenado.",
+   "fin_parrafo": true,
+   "ini": 588.821,
+   "fin": 590.284,
+   "match": 1.0
+  },
+  {
+   "texto": "Y los ocho millones de dólares...",
+   "fin_parrafo": false,
+   "ini": 590.844,
+   "fin": 592.992,
+   "match": 1.0
+  },
+  {
+   "texto": "nadie sabe si alguien llegó a pagarlos.",
+   "fin_parrafo": true,
+   "ini": 593.476,
+   "fin": 595.751,
+   "match": 1.0
+  },
+  {
+   "texto": "Un hombre que movió a millones con sus palabras...",
+   "fin_parrafo": false,
+   "ini": 596.824,
+   "fin": 599.591,
+   "match": 1.0
+  },
+  {
+   "texto": "terminó sin manos, en una tumba que nadie pudo proteger.",
+   "fin_parrafo": true,
+   "ini": 599.818,
+   "fin": 603.526,
+   "match": 1.0
+  },
+  {
+   "texto": "Ahora te toca a ti.",
+   "fin_parrafo": false,
+   "ini": 604.616,
+   "fin": 605.827,
+   "match": 0.8
+  },
+  {
+   "texto": "¿Quién crees que se llevó las manos de Perón?",
+   "fin_parrafo": false,
+   "ini": 606.544,
+   "fin": 608.422,
+   "match": 0.6666666666666666
+  },
+  {
+   "texto": "¿La logia, el dinero, o alguien que nunca vamos a conocer?",
+   "fin_parrafo": false,
+   "ini": 609.049,
+   "fin": 612.583,
+   "match": 1.0
+  },
+  {
+   "texto": "Te leo en los comentarios.",
+   "fin_parrafo": true,
+   "ini": 613.496,
+   "fin": 614.45,
+   "match": 0.8
+  },
+  {
+   "texto": "Y si te gustan los casos que nadie notó, suscríbete.",
+   "fin_parrafo": false,
+   "ini": 615.247,
+   "fin": 617.487,
+   "match": 0.9
+  },
+  {
+   "texto": "Porque en el próximo caso, te voy a contar cómo robaron el cuerpo de una de las mujeres más famosas del mundo...",
+   "fin_parrafo": false,
+   "ini": 617.982,
+   "fin": 623.506,
+   "match": 1.0
+  },
+  {
+   "texto": "y lo escondieron durante dieciséis años.",
+   "fin_parrafo": true,
+   "ini": 623.752,
+   "fin": 626.912,
+   "match": 1.0
+  }
+ ],
+ "duracion": 627.28
+}
