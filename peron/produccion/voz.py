@@ -25,10 +25,21 @@ PAUSA_PARRAFO = 0.65
 
 
 def fx_natural():
-    cal = float(os.environ.get("VOZ_CALIDEZ", "1.5"))
-    return (f"highpass=f=60,equalizer=f=150:t=q:w=1:g={cal},"
-            "acompressor=threshold=-18dB:ratio=2:attack=12:release=160:makeup=1.5,"
-            "loudnorm=I=-14:TP=-1.5:LRA=11")
+    """Solo ecualización suave: sin compresor ni loudnorm (aplastan la voz y la saturan)."""
+    cal = float(os.environ.get("VOZ_CALIDEZ", "2.5"))
+    return (f"highpass=f=60,equalizer=f=150:t=q:w=1:g={cal},equalizer=f=3000:t=q:w=1.5:g=-1.5,"
+            "highshelf=f=6000:g=-4.5")
+
+
+def dinamica(a, lista, sr):
+    """Volumen por frase como un narrador: suspenso más bajo, golpes cortos más fuertes."""
+    g = np.ones_like(a)
+    for f in lista:
+        t = f["texto"].lower(); n = len(t.split())
+        db = -2.5 if t.endswith("...") else 2.0 if n <= 5 else 1.0 if t.endswith("?") else 0.0
+        g[int(f["ini"] * sr): int(f["fin"] * sr)] = 10 ** (db / 20)
+    k = int(0.06 * sr)
+    return a * np.convolve(g, np.ones(k) / k, mode="same")
 
 
 def parrafos(texto):
@@ -112,8 +123,8 @@ def main():
         t += len(a) / SR
         audio.append(np.zeros(int(PAUSA_PARRAFO * SR), dtype=np.float32))
         t += PAUSA_PARRAFO
-    a = np.concatenate(audio)
-    a = (a / max(1e-6, np.abs(a).max()) * 0.9 * 32767).astype(np.int16)
+    a = dinamica(np.concatenate(audio), lista, SR)
+    a = (a / max(1e-6, np.abs(a).max()) * 0.79 * 32767).astype(np.int16)  # pico a -2 dB, sin recortes
     raw = os.path.join(outdir, "voz_cruda.wav")
     with wave.open(raw, "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes(a.tobytes())
