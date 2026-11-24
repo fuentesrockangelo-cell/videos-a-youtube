@@ -156,7 +156,10 @@ def e7():  # boceto a lápiz
         rayado = np.ones(g.size[::-1]) * 255
         yy, xx = np.mgrid[0:g.size[1], 0:g.size[0]]
         rayado[(xx + yy) % 9 == 0] = 140
+        oscuro = np.asarray(g) < 70
         som = np.minimum(np.asarray(sombra), np.where(np.asarray(sombra) < 255, rayado, 255))
+        cruz = np.where(((xx - yy) % 6 == 0) | ((xx + yy) % 6 == 0), 70, 235)
+        som = np.where(oscuro, cruz, som)
         res = np.minimum(np.asarray(linea), som).astype(np.uint8)
         im = Image.fromarray(res).convert("RGB")
         im = Image.blend(im, Image.new("RGB", im.size, (60, 50, 40)), 0.08).convert("RGBA")
@@ -231,8 +234,8 @@ def e10():  # plastilina / 3D suave
         lum = np.asarray(ImageOps.grayscale(sp.convert("RGB")).filter(ImageFilter.GaussianBlur(6))).astype(np.float32) / 255
         h = h * 0.7 + lum * 0.3
         gy, gx = np.gradient(h)
-        shade = np.clip(1 + (-gx * -0.7 + -gy * -0.7) * 9, 0.55, 1.5)
-        spec = np.clip((-gx * 0.7 - gy * 0.7) * 30 - 0.5, 0, 1) * 90
+        shade = np.clip(1 + (gx * 0.7 + gy * 0.7) * 22, 0.45, 1.6)
+        spec = np.clip((-gx * 0.7 - gy * 0.7) * 60 - 0.4, 0, 1) * 140
         rgb = np.asarray(sp.convert("RGB").filter(ImageFilter.GaussianBlur(1.2))).astype(np.float32)
         rgb = rgb * shade[..., None] + spec[..., None]
         rgb += np.random.default_rng(3).normal(0, 5, rgb.shape)
@@ -245,6 +248,183 @@ def e10():  # plastilina / 3D suave
 ESTILOS = [(e1, "CARICATURA CABEZONA"), (e2, "SILUETAS NOIR"), (e3, "PAPEL RECORTADO"), (e4, "CÓMIC NOIR"),
            (e5, "PIXEL ART"), (e6, "NEÓN"), (e7, "BOCETO A LÁPIZ"), (e8, "CHIBI"), (e9, "FRIJOLITOS"),
            (e10, "PLASTILINA 3D")]
+
+
+def _filtro_pintura(sp, tam=7, sat=1.0, textura=40):
+    from PIL import ImageEnhance
+    a = sp.getchannel("A")
+    rgb = sp.convert("RGB").filter(ImageFilter.ModeFilter(tam)).filter(ImageFilter.SMOOTH_MORE)
+    rgb = ImageEnhance.Color(rgb).enhance(sat)
+    tex = Image.effect_noise(sp.size, textura).convert("RGB").filter(ImageFilter.EMBOSS)
+    rgb = Image.blend(rgb, ImageChops.overlay(rgb, tex), 0.35)
+    im = rgb.convert("RGBA"); im.putalpha(a)
+    return im
+
+
+def e11():  # monigote de palitos
+    img, piso = fondo(); img = img.copy(); d = ImageDraw.Draw(img)
+    for (t, _, b, m), x in zip(ELENCO, XS):
+        cx = W * x; base = piso + 6; ink = (245, 245, 245) if t != "ladron" else (240, 70, 70)
+        hy = base - 330
+        d.line([(cx, hy + 70), (cx, base - 140)], fill=ink, width=9)
+        d.line([(cx, base - 140), (cx - 45, base)], fill=ink, width=9); d.line([(cx, base - 140), (cx + 45, base)], fill=ink, width=9)
+        brazo = {"uno": (cx + 80, hy - 20), "frente": (cx - 110 if m < 0 else cx + 110, hy + 120)}.get(b, (cx + 70, hy + 190))
+        d.line([(cx, hy + 120), (cx - 70, hy + 190)], fill=ink, width=9); d.line([(cx, hy + 120), brazo], fill=ink, width=9)
+        d.ellipse([cx - 70, hy - 70, cx + 70, hy + 70], fill=(250, 250, 250), outline=(20, 20, 20), width=8)
+        for ex in (cx - 24, cx + 24):
+            d.ellipse([ex - 9, hy - 14, ex + 9, hy + 6], fill=(20, 20, 20))
+        if t == "peron":
+            d.polygon([(cx - 75, hy - 40), (cx - 85, hy - 105), (cx + 85, hy - 112), (cx + 75, hy - 40)], fill=(110, 120, 66), outline=(20, 20, 20))
+            d.polygon([(cx - 10, hy - 40), (cx + 110, hy - 34), (cx + 95, hy - 20), (cx - 5, hy - 26)], fill=(20, 20, 20))
+            d.arc([cx - 35, hy + 5, cx + 35, hy + 45], 10, 170, fill=(20, 20, 20), width=6)
+            d.line([(cx - 25, hy + 100), (cx + 25, hy + 180)], fill=(108, 172, 228), width=14)
+        elif t == "evita":
+            d.ellipse([cx - 45, hy - 125, cx + 45, hy - 45], fill=(250, 205, 70), outline=(20, 20, 20), width=6)
+            d.polygon([(cx - 40, hy + 160), (cx + 40, hy + 160), (cx + 70, base - 90), (cx - 70, base - 90)], fill=(245, 245, 245), outline=(20, 20, 20))
+            d.arc([cx - 30, hy + 10, cx + 30, hy + 40], 10, 170, fill=(215, 30, 50), width=6)
+        else:
+            d.chord([cx - 70, hy - 10, cx + 70, hy + 70], 0, 180, fill=(20, 20, 24))
+            d.line([(cx - 40, hy - 34), (cx - 10, hy - 22)], fill=(20, 20, 20), width=7); d.line([(cx + 40, hy - 34), (cx + 10, hy - 22)], fill=(20, 20, 20), width=7)
+    return img
+
+
+def e12():  # óleo
+    img, piso = fondo()
+    img = escena_con(sprites(lambda sp: _filtro_pintura(sp, 9, 0.85, 50)), bg=(img, piso))
+    return Image.blend(img.filter(ImageFilter.ModeFilter(5)), Image.new("RGB", img.size, (60, 40, 20)), 0.12)
+
+
+def e13():  # acuarela
+    def acua(sp):
+        a = sp.getchannel("A")
+        rgb = sp.convert("RGB").filter(ImageFilter.GaussianBlur(3))
+        rgb = Image.blend(rgb, Image.new("RGB", sp.size, (255, 255, 255)), 0.25)
+        bordes = ImageOps.invert(ImageOps.grayscale(sp.convert("RGB")).filter(ImageFilter.FIND_EDGES)).point(lambda v: 255 if v > 200 else 120)
+        rgb = ImageChops.multiply(rgb, Image.merge("RGB", (bordes,) * 3))
+        im = rgb.convert("RGBA"); im.putalpha(a.filter(ImageFilter.GaussianBlur(2)))
+        return im
+    papel = Image.new("RGB", (W, H), (240, 232, 215))
+    capa = Image.new("RGB", (W, H), (240, 232, 215)); d = ImageDraw.Draw(capa)
+    d.ellipse([W * 0.7, -100, W * 1.1, H * 0.5], fill=(170, 180, 215)); d.rectangle([0, H * 0.84, W, H], fill=(150, 140, 125))
+    papel = Image.blend(papel, capa.filter(ImageFilter.GaussianBlur(40)), 0.8)
+    papel = ImageChops.multiply(papel, Image.effect_noise((W, H), 30).convert("RGB").point(lambda v: 215 + v // 6))
+    return escena_con(sprites(acua, luz=(240, 232, 215)), bg=(papel, int(H * 0.84)))
+
+
+def e14():  # anime suave pastel
+    def anime(sp):
+        from PIL import ImageEnhance
+        a = sp.getchannel("A")
+        rgb = ImageEnhance.Brightness(sp.convert("RGB")).enhance(1.12)
+        rgb = Image.blend(rgb, Image.new("RGB", sp.size, (255, 220, 235)), 0.18)
+        im = rgb.convert("RGBA"); im.putalpha(a)
+        return im
+    img = Image.new("RGB", (W, H)); d = ImageDraw.Draw(img)
+    for i in range(H):
+        t = i / H
+        d.line([(0, i), (W, i)], fill=(int(60 + 140 * t), int(40 + 60 * t), int(120 + 60 * t)))
+    rnd = random.Random(4)
+    for _ in range(60):
+        x, y = rnd.randrange(W), rnd.randrange(int(H * 0.7)); r = rnd.choice((2, 3, 5))
+        d.ellipse([x - r, y - r, x + r, y + r], fill=(255, 240, 250))
+    d.rectangle([0, H * 0.84, W, H], fill=(70, 50, 90))
+    return escena_con(sprites(anime, luz=(255, 190, 230)), bg=(img, int(H * 0.84)))
+
+
+def e15():  # 3D tipo película animada (sombreado esférico fuerte)
+    def tres_d(sp):
+        a = np.asarray(sp.getchannel("A")).astype(np.float32) / 255
+        rgb = np.asarray(sp.convert("RGB")).astype(np.float32)
+        h = np.asarray(sp.getchannel("A").filter(ImageFilter.GaussianBlur(28))).astype(np.float32) / 255
+        gy, gx = np.gradient(h)
+        luz = np.clip(0.75 + (gx * 0.6 + gy * 0.8) * -35 + h * 0.35, 0.35, 1.45)
+        spec = np.clip((-gx * 0.6 - gy * 0.8) * 90 - 0.6, 0, 1) * 120
+        rgb = rgb * luz[..., None] + spec[..., None]
+        im = Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8)).filter(ImageFilter.SMOOTH).convert("RGBA")
+        im.putalpha(Image.fromarray((a * 255).astype(np.uint8)))
+        return im
+    return escena_con(sprites(tres_d))
+
+
+def e16():  # cómic oscuro con sombras duras
+    def duro(sp):
+        a = sp.getchannel("A")
+        rgb = sp.convert("RGB").quantize(8).convert("RGB")
+        w, h = sp.size
+        m = Image.new("L", sp.size, 0); ImageDraw.Draw(m).polygon([(w * 0.55, 0), (w, 0), (w, h), (w * 0.62, h)], fill=150)
+        rgb.paste((10, 10, 14), (0, 0), ImageChops.multiply(m, a))
+        bordes = ImageOps.grayscale(sp.convert("RGB")).filter(ImageFilter.FIND_EDGES).point(lambda v: 255 if v > 30 else 0).filter(ImageFilter.MaxFilter(3))
+        rgb.paste((0, 0, 0), (0, 0), bordes)
+        im = rgb.convert("RGBA"); im.putalpha(a)
+        return im
+    img, piso = fondo()
+    img = Image.blend(img, Image.new("RGB", (W, H), (90, 0, 10)), 0.3)
+    return escena_con(sprites(duro, luz=(255, 60, 60)), bg=(img, piso))
+
+
+def e17():  # póster de propaganda años 40
+    def poster(sp):
+        a = sp.getchannel("A")
+        g = ImageOps.grayscale(sp.convert("RGB"))
+        pal = [(30, 25, 25), (180, 35, 35), (235, 220, 190)]
+        arr = np.asarray(g)
+        out = np.zeros(arr.shape + (3,), np.uint8)
+        out[arr < 70] = pal[0]; out[(arr >= 70) & (arr < 160)] = pal[1]; out[arr >= 160] = pal[2]
+        im = Image.fromarray(out).convert("RGBA"); im.putalpha(a)
+        return im
+    img = Image.new("RGB", (W, H), (235, 220, 190)); d = ImageDraw.Draw(img)
+    for k in range(0, 360, 12):
+        import math
+        d.polygon([(W / 2, H * 0.55), (W / 2 + math.cos(math.radians(k)) * 1500, H * 0.55 + math.sin(math.radians(k)) * 1500),
+                   (W / 2 + math.cos(math.radians(k + 6)) * 1500, H * 0.55 + math.sin(math.radians(k + 6)) * 1500)], fill=(215, 190, 150))
+    d.rectangle([0, H * 0.84, W, H], fill=(30, 25, 25))
+    return escena_con(sprites(poster, luz=(235, 220, 190)), bg=(img, int(H * 0.84)))
+
+
+def e18():  # grabado / linóleo
+    def grabado(sp):
+        a = sp.getchannel("A")
+        g = np.asarray(ImageOps.grayscale(sp.convert("RGB"))).astype(np.int16)
+        yy, xx = np.mgrid[0:g.shape[0], 0:g.shape[1]]
+        lineas = (np.sin(yy * 0.9 + np.sin(xx * 0.05) * 3) + 1) * 127
+        tinta = g < lineas * 0.8
+        out = np.where(tinta, 25, 238).astype(np.uint8)
+        im = Image.fromarray(out).convert("RGB")
+        im = ImageChops.multiply(im, Image.new("RGB", im.size, (245, 235, 215))).convert("RGBA"); im.putalpha(a)
+        return im
+    img = Image.new("RGB", (W, H), (240, 230, 210)); d = ImageDraw.Draw(img)
+    for y in range(0, H, 7):
+        d.line([(0, y), (W, y)], fill=(215, 205, 185), width=2)
+    d.rectangle([0, H * 0.84, W, H], fill=(25, 25, 25))
+    return escena_con(sprites(grabado, luz=(240, 230, 210)), bg=(img, int(H * 0.84)))
+
+
+def e19():  # tiza en pizarra
+    def tiza(sp):
+        a = sp.getchannel("A")
+        g = ImageOps.grayscale(sp.convert("RGB"))
+        b = ImageChops.lighter(g.filter(ImageFilter.FIND_EDGES), a.filter(ImageFilter.FIND_EDGES)).point(lambda v: 255 if v > 35 else 0)
+        b = b.filter(ImageFilter.MaxFilter(3))
+        ruido = Image.effect_noise(sp.size, 120).point(lambda v: 255 if v > 110 else 60)
+        b = ImageChops.multiply(b, ruido)
+        relleno = ImageChops.multiply(a.point(lambda v: 40 if v > 128 else 0), ruido)
+        col = Image.new("RGBA", sp.size, (0, 0, 0, 0))
+        col.paste(Image.new("RGBA", sp.size, (250, 250, 240, 255)), (0, 0), ImageChops.lighter(b, relleno))
+        return col
+    img = Image.new("RGB", (W, H), (32, 58, 46))
+    img = ImageChops.add(img, Image.effect_noise((W, H), 18).convert("RGB").point(lambda v: v // 10))
+    d = ImageDraw.Draw(img); d.line([(0, H * 0.84), (W, H * 0.84)], fill=(220, 220, 210), width=4)
+    d.rectangle([0, 0, W, 16], fill=(110, 75, 40)); d.rectangle([0, H - 16, W, H], fill=(110, 75, 40))
+    return escena_con(sprites(tiza, luz=(32, 58, 46)), bg=(img, int(H * 0.84)))
+
+
+def e20():  # caricatura editorial pintada (cabezona + pintura)
+    return escena_con(sprites(lambda sp: _filtro_pintura(sp, 5, 1.15, 30)), alto=450)
+
+
+ESTILOS += [(e11, "MONIGOTE DE PALITOS"), (e12, "ÓLEO"), (e13, "ACUARELA"), (e14, "ANIME PASTEL"),
+            (e15, "3D TIPO PELÍCULA"), (e16, "CÓMIC OSCURO"), (e17, "PÓSTER AÑOS 40"), (e18, "GRABADO"),
+            (e19, "TIZA EN PIZARRA"), (e20, "CARICATURA PINTADA")]
 
 if __name__ == "__main__":
     out = sys.argv[1]
