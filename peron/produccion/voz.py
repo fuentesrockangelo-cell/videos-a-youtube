@@ -102,7 +102,7 @@ def main():
         t += len(a) / SR
         f["fin"] = t
         audio.append(a)
-        pausa = pausa_tras(f)
+        pausa = pausa_tras(f) * float(os.environ.get("VOZ_PAUSA", "1"))
         audio.append(np.zeros(int(pausa * SR), dtype=np.float32))
         t += pausa
     a = np.concatenate(audio)
@@ -111,7 +111,11 @@ def main():
     with wave.open(raw, "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes(a.tobytes())
     expr = os.path.join(outdir, "voz_expr.wav")
-    if KOKORO:
+    if KOKORO and os.environ.get("VOZ_EXPR"):
+        # entonación más expresiva (tono medio y ganancia de variación)
+        subprocess.run([sys.executable, os.path.join(HERE, "expresion.py"), raw, expr,
+                        os.environ.get("VOZ_TONO", "130"), os.environ["VOZ_EXPR"]], check=True)
+    elif KOKORO:
         expr = raw  # la voz ya es natural: no se fuerza la entonación
     else:
         subprocess.run([sys.executable, os.path.join(HERE, "expresion.py"), raw, expr, "132", "1.9"], check=True)
